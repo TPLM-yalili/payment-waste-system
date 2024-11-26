@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class AdminController extends Controller
 {
     public function showLoginForm()
     {
@@ -52,13 +52,20 @@ class AuthController extends Controller
         abort(403, 'Unauthorized access.');
     }
 
+    // Super admin handler
     public function superAdminDashboard()
     {
-        return view('admin.super-admin-dashboard'); // Dashboard khusus super admin
+        return view('admin.super-admin.index'); // Dashboard khusus super admin
     }
 
+    public function superAdminInfo()
+    {
+        return view('admin.super-admin.info');
+    }
+
+    // Admin handler
     public function adminDashboard()
     {
-        return view('admin.admin-dashboard'); // Dashboard khusus admin
+        return view('admin.index'); // Dashboard khusus admin
     }
 }

@@ -20,9 +20,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
         'role',     // Nilai default 'user' (user biasa)
-        'username',
+        'no_kk',
+        'no_wa',
+        'google_id'
     ];
 
     /**

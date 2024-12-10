@@ -10,7 +10,7 @@ class RoleMiddleware
 {
     /**
      * Handle an incoming request.
-     *
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  string  $role
@@ -18,7 +18,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-        if (Auth::check() && Auth::user()->role === $role) {
+        if (Auth::check() && Auth::guard('admin')->user()->role === $role) {
             return $next($request);
         }
 

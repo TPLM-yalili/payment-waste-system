@@ -1,19 +1,24 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\PostRegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Invoice;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $invoices = Invoice::where('user_id', auth()->id())->get();
+    return view('dashboard', compact('invoices'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -24,6 +29,17 @@ Route::middleware('auth')->group(function () {
     // Post register
     Route::get('/auth/post-register', [PostRegisterController::class, 'index'])->name('post-register');
     Route::post('/auth/post-register', [PostRegisterController::class, 'update']);
+
+    Route::get('/dashboard', [InvoiceController::class, 'index'])->name('dashboard');
+    Route::get('/invoice/pay/{invoiceId}', [InvoiceController::class, 'payInvoice'])->name('invoice.pay');
+    Route::get('/payment/success', [InvoiceController::class, 'paymentSuccess'])->name('payment.success');
+    Route::get('/payment/failed', [InvoiceController::class, 'paymentFailed'])->name('payment.failed');
+    Route::post('/midtrans/webhook', [InvoiceController::class, 'handleMidtransWebhook']);
+    // web.php
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+
+
 });
 
 Route::prefix('auth')->group(function () {
@@ -36,18 +52,24 @@ Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [AdminController::class, 'login'])->name('admin.login.submit');
 
-    // Super Admin Dashboard
-    Route::middleware(['auth'])->group(function () {
+    // Super Admin 
+    Route::middleware(['auth:admin', RoleMiddleware::class . ':super admin'])->group(function () {
         Route::get('/super-admin', [AdminController::class, 'superAdminDashboard'])->name('super.admin.dashboard');
-    })->middleware((RoleMiddleware::class . ':super admin'));
+        Route::get('/super-admin/info', [AdminController::class, 'superAdminInfo'])->name('super.admin.info');
+        Route::delete('/admin/{id}/delete', [AdminController::class, 'deleteAdmin'])->name('admin.delete');
+        Route::post('/admin/store', [AdminController::class, 'storeAdmin'])->name('admin.store');
+        Route::put('/admin/super-admin/info', [AdminController::class, 'updateSuperAdminInfo'])->name('super.admin.update');
+        Route::put('/admin/super-admin/password', [AdminController::class, 'updatePassword'])->name('super.admin.password.update');
+    });
 
-    // Admin Dashboard
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/admin', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
-    })->middleware((RoleMiddleware::class . ':admin'));
+    // Admin 
+    Route::middleware(['auth:admin', RoleMiddleware::class . ':admin'])->group(function () {
+        Route::get('/', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
+        Route::get('/admin/info', [AdminController::class, 'adminInfo'])->name('admin.info');
+    });
 
     Route::post('/logout', function () {
-        Auth::logout();
+        Auth::guard('admin')->logout(); // Logout menggunakan guard admin
         session()->invalidate();
         session()->regenerateToken();
         return redirect('/admin/login');

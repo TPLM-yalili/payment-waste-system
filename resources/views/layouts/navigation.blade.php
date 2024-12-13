@@ -27,18 +27,23 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 6.165 7 7.388 7 8.752v5.406a2.032 2.032 0 01-.595 1.437L5 17h5" />
                         </svg>
                         <span class="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                            {{ auth()->user()->unreadNotifications->count() }}
+                            {{ auth()->user()->unreadNotifications ? auth()->user()->unreadNotifications->count() : 0 }}
                         </span>
                     </button>
                     <div id="notification-dropdown" class="absolute right-0 mt-2 w-80 bg-white border border-gray-300 rounded-lg shadow-lg hidden">
-                        <div class="max-h-60 overflow-y-auto p-4">
-                            @foreach(auth()->user()->notifications as $notification)
-                                <div class="p-2 hover:bg-gray-100 rounded-lg">
-                                    <p>{{ $notification->data['message'] }}</p>
-                                    <p class="text-xs text-gray-500">{{ $notification->created_at->diffForHumans() }}</p>
-                                </div>
-                            @endforeach
-                        </div>
+                    <div class="max-h-60 overflow-y-auto p-4">
+    @if(auth()->user()->notifications)
+        @foreach(auth()->user()->notifications as $notification)
+            <div class="p-2 hover:bg-gray-100 rounded-lg">
+                <p>{{ $notification->data['message'] }}</p>
+                <p class="text-xs text-gray-500">{{ $notification->created_at->diffForHumans() }}</p>
+            </div>
+        @endforeach
+    @else
+        <p>No notifications available.</p>
+    @endif
+</div>
+
                         <div class="border-t border-gray-200">
                             <a href="{{ route('notifications.index') }}" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">Lihat Semua Notifikasi</a>
                         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -61,8 +62,33 @@ class AdminController extends Controller
     // Super admin handler
     public function superAdminDashboard()
     {
+        // Menghitung jumlah admin dan jumlah pengguna
+        $adminCount = Admin::count();
+        $userCount = User::count();
+
+        // Mengambil data admin untuk tabel
         $admins = Admin::where('role', 'admin')->get();
-        return view('admin.super-admin.index', compact('admins'));
+
+        return view('admin.super-admin.index', compact('adminCount', 'userCount', 'admins'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'password' => 'nullable|string|min:6|confirmed', // Pastikan password di-validasi
+        ]);
+    
+        $admin = Admin::findOrFail($id);
+        $admin->username = $request->input('username');
+    
+        if ($request->filled('password')) {
+            $admin->password = bcrypt($request->input('password')); // Enkripsi password
+        }
+    
+        $admin->save();
+
+        return redirect()->route('super.admin.dashboard')->with('success', 'Admin updated successfully');
     }
 
     public function superAdminInfo()

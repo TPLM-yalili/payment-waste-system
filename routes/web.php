@@ -57,6 +57,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/super-admin', [AdminController::class, 'superAdminDashboard'])->name('super.admin.dashboard');
         Route::get('/super-admin/info', [AdminController::class, 'superAdminInfo'])->name('super.admin.info');
         Route::delete('/admin/{id}/delete', [AdminController::class, 'deleteAdmin'])->name('admin.delete');
+        Route::put('/admin/{admin}', [AdminController::class, 'update'])->name('admin.update');
         Route::post('/admin/store', [AdminController::class, 'storeAdmin'])->name('admin.store');
         Route::put('/admin/super-admin/info', [AdminController::class, 'updateSuperAdminInfo'])->name('super.admin.update');
         Route::put('/admin/super-admin/password', [AdminController::class, 'updatePassword'])->name('super.admin.password.update');

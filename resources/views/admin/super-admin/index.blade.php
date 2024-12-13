@@ -1,153 +1,203 @@
-<!DOCTYPE html>
-<html lang="en">
+<x-app-layout>
+    <div class="flex h-screen bg-gray-100">
+        <!-- Sidebar -->
+        <div class="w-64 bg-blue-100 shadow-lg">
+            <!-- Logo Section -->
+            <div class="flex items-center justify-center py-6">
+                <span class="text-xl font-bold text-gray-800">Kapays</span>
+            </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Admin Dashboard</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+            <!-- User Section -->
+            <div class="px-4 py-3 bg-blue-200 mx-4 rounded flex justify-between items-center">
+                <span class="font-semibold">Super Admin</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
 
-        table,
-        th,
-        td {
-            border: 1px solid black;
-        }
+            <!-- Navigation Menu -->
+            <nav class="mt-6 px-4">
+                <ul class="space-y-3">
+                    <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">Dashboard</li>
+                    <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
+                        <a href="{{ route('super.admin.info') }}">Super Admin Info</a>
+                    </li>
 
-        th,
-        td {
-            padding: 8px;
-            text-align: left;
-        }
+                </ul>
+            </nav>
+        </div>
 
-        th {
-            background-color: #f2f2f2;
-        }
+        <!-- Main Content -->
+        <div class="flex-1 px-8 py-6 bg-white">
+            @include('layouts.navigation')
+            <h1 class="text-2xl font-bold my-6">Super Admin Dashboard</h1>
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            background: white;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 101; /* Pastikan modal berada di atas overlay */
-        }
+            <!-- Cards Section -->
+            <div class="grid grid-cols-3 gap-6 mb-8">
+                <div class="p-6 bg-white rounded shadow">
+                    <h2 class="text-lg font-bold">Jumlah Admin</h2>
+                    <p class="text-3xl mt-4 font-semibold text-blue-600">{{ $adminCount }}</p>
+                </div>
+                <div class="p-6 bg-white rounded shadow">
+                    <h2 class="text-lg font-bold">Jumlah Pengguna</h2>
+                    <p class="text-3xl mt-4 font-semibold text-blue-600">{{ $userCount }}</p>
+                </div>
+            </div>
 
-        .modal.active {
-            display: block;
-        }
+            <!-- Admin Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse border border-gray-300 bg-white rounded shadow">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="border border-gray-300 p-4 text-left">No</th>
+                            <th class="border border-gray-300 p-4 text-left">Username</th>
+                            <th class="border border-gray-300 p-4 text-left">Password</th>
+                            <th class="border border-gray-300 p-4 text-left">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php $no = 1; @endphp
+                        @foreach ($admins as $admin)
+                            <tr class="hover:bg-gray-100">
+                                <td class="border border-gray-300 p-4">{{ $no++ }}</td>
+                                <td class="border border-gray-300 p-4">{{ $admin->username }}</td>
+                                <td class="border border-gray-300 p-4">
+                                    <span id="password-{{ $admin->id }}" class="password-text">**********</span>
+                                    <button type="button" class="text-blue-500 hover:text-blue-600 ml-2"
+                                        onclick="togglePasswordVisibility('{{ $admin->id }}')">
+                                        Preview
+                                    </button>
+                                </td>
+                                <td class="border border-gray-300 p-4 flex items-center space-x-4">
+                                    <!-- Edit Button -->
+                                    <a href="#" class="text-yellow-500 hover:text-yellow-600"
+                                        onclick="document.getElementById('edit-modal-{{ $admin->id }}').classList.remove('hidden')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V9l-6-6z" />
+                                        </svg>
+                                    </a>
 
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 100; /* Overlay di bawah modal */
-        }
+                                    <!-- Delete Button -->
+                                    <form action="{{ route('admin.delete', $admin->id) }}" method="POST"
+                                        class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline"
+                                            onclick="return confirm('Yakin ingin menghapus admin ini?')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
 
-        .overlay.active {
-            display: block;
-        }
-    </style>
-</head>
+                            <!-- Edit Admin Modal -->
+                            <div id="edit-modal-{{ $admin->id }}"
+                                class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden flex justify-center items-center">
+                                <div class="bg-white p-8 rounded shadow-lg w-full max-w-md">
+                                    <h2 class="text-xl font-bold mb-6">Edit Admin</h2>
+                                    <form action="{{ route('admin.update', $admin->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="mb-4">
+                                            <label for="username"
+                                                class="block text-sm font-medium text-gray-700">Username:</label>
+                                            <input type="text" id="username" name="username"
+                                                class="w-full border border-gray-300 rounded p-3"
+                                                value="{{ $admin->username }}" required />
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="password"
+                                                class="block text-sm font-medium text-gray-700">Password:</label>
+                                            <input type="password" id="password-{{ $admin->id }}" name="password"
+                                                class="w-full border border-gray-300 rounded p-3" />
+                                            <button type="button" class="mt-2 text-blue-500 hover:text-blue-600"
+                                                onclick="togglePasswordVisibility('{{ $admin->id }}')">
+                                                Preview
+                                            </button>
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button type="submit"
+                                                class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600">Simpan</button>
+                                            <button type="button"
+                                                class="ml-4 px-6 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                                                onclick="document.getElementById('edit-modal-{{ $admin->id }}').classList.add('hidden')">Tutup</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-<body>
-    <h1>Dashboard Super Admin</h1>
-    <ul>
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="/admin/super-admin/info">Account Info</a></li>
-    </ul>
-    <p>Selamat datang, {{ Auth::user()->username }}</p>
+            <!-- Add Admin Button -->
+            <div class="mt-6">
+                <button id="open-modal" class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600">Tambah
+                    Admin</button>
+            </div>
 
-    {{-- Tabel daftar admin --}}
-    <h2>Daftar Admin</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Username</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php $no = 1; @endphp
-            @foreach ($admins as $admin)
-                <tr>
-                    <td>{{ $no++ }}</td>
-                    <td>{{ $admin->username }}</td>
-                    <td>
-                        <form action="{{ route('admin.delete', $admin->id) }}" method="POST"
-                            style="display: inline-block;">
-                            @csrf
-                            @method('DELETE')
+            <!-- Add Admin Modal -->
+            <div id="modal"
+                class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden flex justify-center items-center">
+                <div class="bg-white p-8 rounded shadow-lg w-full max-w-md">
+                    <h2 class="text-xl font-bold mb-6">Tambah Admin</h2>
+                    <form action="{{ route('admin.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
+                            <input type="text" id="username" name="username"
+                                class="w-full border border-gray-300 rounded p-3" required />
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
+                            <input type="password" id="password" name="password"
+                                class="w-full border border-gray-300 rounded p-3" required />
+                            <button type="button" class="mt-2 text-blue-500 hover:text-blue-600"
+                                onclick="togglePasswordVisibility('password')">
+                                Preview
+                            </button>
+                        </div>
+                        <div class="mb-6">
+                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm
+                                Password:</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation"
+                                class="w-full border border-gray-300 rounded p-3" required />
+                            <button type="button" class="mt-2 text-blue-500 hover:text-blue-600"
+                                onclick="togglePasswordVisibility('password_confirmation')">
+                                Preview
+                            </button>
+                        </div>
+                        <div class="flex justify-end">
                             <button type="submit"
-                                onclick="return confirm('Yakin ingin menghapus admin ini?')">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    {{-- Button untuk membuka modal --}}
-    <button id="open-modal">Tambah Admin</button>
-
-    {{-- Modal untuk tambah admin --}}
-    <div id="modal" class="modal">
-        <h2>Tambah Admin</h2>
-        <form action="{{ route('admin.store') }}" method="POST">
-            @csrf
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
-            <button type="submit">Simpan</button>
-        </form>
-        <button id="close-modal">Tutup</button>
+                                class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600">Simpan</button>
+                            <button type="button" id="close-modal"
+                                class="ml-4 px-6 py-2 bg-gray-300 rounded hover:bg-gray-400">Tutup</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
-    {{-- Overlay --}}
-    <div id="overlay" class="overlay"></div>
-
-    {{-- Logout --}}
-    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
-    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-
     <script>
-        // Script untuk mengatur modal
-        const modal = document.getElementById('modal');
-        const overlay = document.getElementById('overlay');
-        const openModalButton = document.getElementById('open-modal');
-        const closeModalButton = document.getElementById('close-modal');
+        // Toggle Password Visibility
+        function togglePasswordVisibility(id) {
+            var passwordField = document.getElementById('password-' + id);
+            var passwordText = document.getElementById('password-' + id + '-text');
 
-        openModalButton.addEventListener('click', () => {
-            modal.classList.add('active');
-            overlay.classList.add('active');
-        });
-
-        closeModalButton.addEventListener('click', () => {
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-
-        overlay.addEventListener('click', () => {
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
-        });
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                passwordText.innerHTML = passwordField.value; // Show password text
+            } else {
+                passwordField.type = "password";
+            }
+        }
     </script>
-</body>
-
-</html>
+</x-app-layout>

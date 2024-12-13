@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/invoice/pay/{invoiceId}', [InvoiceController::class, 'payInvoice'])->name('invoice.pay');
     Route::get('/payment/success', [InvoiceController::class, 'paymentSuccess'])->name('payment.success');
     Route::get('/payment/failed', [InvoiceController::class, 'paymentFailed'])->name('payment.failed');
+    Route::get('/payment/pending', [InvoiceController::class, 'paymentPending'])->name('payment.pending');
     Route::post('/midtrans/webhook', [InvoiceController::class, 'handleMidtransWebhook']);
     // web.php
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');

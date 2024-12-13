@@ -11,12 +11,10 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\PaymentSuccessNotification;
 use App\Notifications\InvoiceReminderNotification;
 
-
 class InvoiceController extends Controller
 {
     public function index()
     {
-        // Mengambil invoice yang belum dibayar (pending) untuk user yang sedang login
         $invoices = Invoice::where('user_id', auth()->id())
             ->where('status', 'pending')
             ->orderBy('due_date', 'desc')
@@ -27,48 +25,34 @@ class InvoiceController extends Controller
 
     public function handleMidtransWebhook(Request $request)
     {
-        // Log incoming notification for debugging
         Log::info('Midtrans Webhook Notification:', $request->all());
 
-        // Parse the notification data
         $data = $request->json()->all();
-
-        // Check the transaction status
         $transactionStatus = $data['transaction_status'];
         $orderId = $data['order_id'];
 
-        // Find the invoice by order ID
         $invoice = Invoice::where('order_id', $orderId)->first();
 
         if ($invoice) {
-            // Update the invoice status based on the transaction status
             switch ($transactionStatus) {
                 case 'settlement':
-                    // Mark as paid if the payment is successful
                     $invoice->status = 'paid';
-                    $invoice->save();
                     break;
                 case 'pending':
-                    // Mark as pending if the payment is still being processed
                     $invoice->status = 'pending';
-                    $invoice->save();
                     break;
                 case 'cancel':
                 case 'deny':
                 case 'expired':
-                    // Mark as failed if the payment was canceled, denied, or expired
                     $invoice->status = 'failed';
-                    $invoice->save();
                     break;
                 default:
-                    // Handle any other transaction status
                     $invoice->status = 'unknown';
-                    $invoice->save();
                     break;
             }
+            $invoice->save();
         }
 
-        // Send a 200 OK response to Midtrans
         return response()->json(['status' => 'success'], 200);
     }
 
@@ -81,50 +65,39 @@ class InvoiceController extends Controller
             return redirect()->route('invoice.index')->withErrors('Invoice tidak ditemukan');
         }
 
-        // Set konfigurasi Midtrans
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         Config::$clientKey = env('MIDTRANS_CLIENT_KEY');
         Config::$isProduction = false;
 
-        $transactionDetails = [
-            'order_id' => $invoice->order_id,
-            'gross_amount' => $invoice->amount,
-        ];
-
-        $customerDetails = [
-            'first_name' => $invoice->user->name,
-            'email' => $invoice->user->email,
-            'phone' => $invoice->user->phone,
-            'billing_address' => [
-                'first_name' => $invoice->user->name,
-                'address' => $invoice->billing_address,
-                'city' => $invoice->city,
-                'postal_code' => $invoice->postal_code,
-                'phone' => $invoice->user->phone,
-            ],
-        ];
-
-        $itemDetails = [
-            [
-                'id' => $invoice->order_id,
-                'price' => $invoice->amount,
-                'quantity' => 1,
-                'name' => 'Pembayaran Invoice #' . $invoice->order_id,
-            ],
-        ];
-
         $params = [
-            'transaction_details' => $transactionDetails,
-            'customer_details' => $customerDetails,
-            'item_details' => $itemDetails,
+            'transaction_details' => [
+                'order_id' => $invoice->order_id,
+                'gross_amount' => $invoice->amount,
+            ],
+            'customer_details' => [
+                'first_name' => $invoice->user->name,
+                'email' => $invoice->user->email,
+                'phone' => $invoice->user->phone,
+                'billing_address' => [
+                    'first_name' => $invoice->user->name,
+                    'address' => $invoice->billing_address,
+                    'city' => $invoice->city,
+                    'postal_code' => $invoice->postal_code,
+                    'phone' => $invoice->user->phone,
+                ],
+            ],
+            'item_details' => [
+                [
+                    'id' => $invoice->order_id,
+                    'price' => $invoice->amount,
+                    'quantity' => 1,
+                    'name' => 'Pembayaran Invoice #' . $invoice->order_id,
+                ],
+            ],
         ];
 
         try {
-            Log::info('Mencoba membuat Snap Token');
-            // Log data yang dikirim ke Midtrans
-            Log::info('Data transaksi:', $params);
-
-            // Mengambil Snap Token
+            Log::info('Mencoba membuat Snap Token', $params);
             $snapToken = Snap::getSnapToken($params);
             Log::info('Snap Token berhasil dibuat: ' . $snapToken);
 
@@ -139,14 +112,11 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::findOrFail($invoiceId);
 
-        // Simulasi update status invoice setelah pembayaran
         $invoice->status = 'paid';
         $invoice->save();
 
-        // Kirim notifikasi pembayaran berhasil
         Notification::send($invoice->user, new PaymentSuccessNotification($invoice));
 
-        // Redirect ke halaman sukses pembayaran
         return redirect()->route('payment.success')->with('success', 'Pembayaran berhasil!');
     }
 
@@ -167,18 +137,16 @@ class InvoiceController extends Controller
         $invoice = Invoice::where('order_id', $orderId)->first();
 
         if (!$invoice) {
-            return redirect()->route('dashboard')->with('error', 'Invoice not found.');
+            return redirect()->route('dashboard')->with('error', 'Invoice tidak ditemukan.');
         }
 
-        // Update the status to 'paid'
         $invoice->status = 'paid';
         $invoice->save();
 
-        $user = $invoice->user; // Pastikan ada relasi 'user' di model Invoice
+        $user = $invoice->user;
         if ($user) {
             $user->notify(new PaymentSuccessNotification($invoice));
         }
-
 
         return view('payment.success', compact('invoice'));
     }
@@ -188,13 +156,27 @@ class InvoiceController extends Controller
         $orderId = $request->query('order_id');
         $invoice = Invoice::where('order_id', $orderId)->first();
 
-        return view('dashboard', compact('invoice'));
+        if ($invoice && $invoice->status === 'pending') {
+            // Proses untuk memperbarui status invoice jika diperlukan
+            $invoice->save();
+        }
+
+        return view('payment.pending', compact('invoice'));
     }
 
     public function paymentFailed()
     {
-        // Tampilkan halaman jika pembayaran gagal
-        return view('payment.failed');  // Sesuaikan dengan view yang kamu inginkan
+        return view('payment.failed');
     }
 
+    public function showPendingPayment($invoiceId)
+    {
+        $invoice = Invoice::find($invoiceId);
+
+        if (!$invoice) {
+            abort(404, 'Invoice tidak ditemukan');
+        }
+
+        return view('payments.pending', compact('invoice'));
+    }
 }

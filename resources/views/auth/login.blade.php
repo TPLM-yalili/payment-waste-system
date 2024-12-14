@@ -10,8 +10,5 @@
             <a href="/auth/google" class="btn btn-outline">
                 <x-google-logo class="mr-2" /> <span>Login dengan Google</span>
             </a>
-        <!-- <div class="form-control mt-6">
-          <button class="btn btn-neutral">Login</button>
-        </div> -->
       </form>
 </x-guest-layout>

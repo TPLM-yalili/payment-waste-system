@@ -1,5 +1,5 @@
-<x-app-layout>
-    <div class="flex h-screen bg-gray-100">
+<x-admin-layout title="Admin Dashboard">
+    <div class="flex h-screen bg-gray-100 text-black">
         <!-- Sidebar -->
         <div class="w-64 bg-blue-100 shadow-lg">
             <!-- Logo Section -->
@@ -23,7 +23,12 @@
                     <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
                         <a href="{{ route('super.admin.info') }}">Super Admin Info</a>
                     </li>
-
+                    <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full text-left">Logout</button>
+                        </form>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -199,5 +204,22 @@
                 passwordField.type = "password";
             }
         }
+        // Open Modal
+        document.getElementById('open-modal').addEventListener('click', function () {
+            document.getElementById('modal').classList.remove('hidden');
+        });
+
+        // Close Modal
+        document.getElementById('close-modal').addEventListener('click', function () {
+            document.getElementById('modal').classList.add('hidden');
+        });
+
+        // Close Modal on Outside Click
+        document.getElementById('modal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+
     </script>
-</x-app-layout>
+</x-admin-layout>

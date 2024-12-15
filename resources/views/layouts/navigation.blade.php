@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto rounded-lg fill-current text-gray-800 " />
+                        <x-application-logo class="block h-9 w-auto rounded-lg fill-current text-gray-800" />
                     </a>
                 </div>
 
@@ -42,21 +42,22 @@
                         </div> 
                     </button>
                     <div id="notification-dropdown" class="absolute right-0 mt-2 w-80 bg-white border border-gray-300 rounded-lg shadow-lg hidden">
-                    <div class="max-h-60 overflow-y-auto p-4">
-    @if(auth()->user()->notifications)
-        @foreach(auth()->user()->notifications as $notification)
-            <div class="p-2 hover:bg-gray-100 rounded-lg">
-                <p>{{ $notification->data['message'] }}</p>
-                <p class="text-xs text-gray-500">{{ $notification->created_at->diffForHumans() }}</p>
-            </div>
-        @endforeach
-    @else
-        <p>No notifications available.</p>
-    @endif
-</div>
-
+                        <div class="max-h-60 overflow-y-auto p-4">
+                            @if(auth()->user()->notifications)
+                                @foreach(auth()->user()->notifications as $notification)
+                                    <div class="p-2 hover:bg-gray-100 rounded-lg">
+                                        <p>{{ $notification->data['message'] }}</p>
+                                        <p class="text-xs text-gray-500">{{ $notification->created_at->diffForHumans() }}</p>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p>No notifications available.</p>
+                            @endif
+                        </div>
                         <div class="border-t border-gray-200">
-                            <a href="{{ route('notifications.index') }}" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">Lihat Semua Notifikasi</a>
+                            <a href="{{ route('notifications.index') }}" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">
+                                Lihat Semua Notifikasi
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -42,9 +43,6 @@ class AdminController extends Controller
 
         return back()->withErrors('Username atau password salah.');
     }
-
-
-
 
     public function redirectToDashboard()
     {
@@ -161,6 +159,21 @@ class AdminController extends Controller
 
     public function adminDashboard()
     {
-        return view('admin.index'); // Dashboard khusus admin
+        $pendingInvoicesCount = Invoice::where('status', 'pending')->count();
+
+        // Mengambil jumlah pengguna
+        $usersCount = User::count();
+
+        // Mengambil total amount dari invoices yang terbayar
+        $paidInvoicesAmount = Invoice::where('status', 'paid')->sum('amount');
+
+        $pendingInvoices = Invoice::where('status', 'pending')->get();
+
+        return view('admin.index', [
+            'pendingInvoicesCount' => $pendingInvoicesCount,
+            'usersCount' => $usersCount,
+            'paidInvoicesAmount' => $paidInvoicesAmount,
+            'pendingInvoices' => $pendingInvoices,
+        ]); // Dashboard khusus admin
     }
 }

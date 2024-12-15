@@ -1,7 +1,5 @@
 @props(['width' => 24, 'height' => 24])
 
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 <svg {{$attributes}} width="{{$width}}px" height="{{$height}}px" viewBox="-3 0 262 262"
     xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
     <path

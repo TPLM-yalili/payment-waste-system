@@ -2,12 +2,12 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="/auth/post-register" class="w-full max-w-sm">
+    <form method="POST" action="/auth/post-register" class="w-full max-w-sm px-6 pt-8 pb-6">
         @csrf
 
         {{-- No. KK --}}
         <div>
-            <x-input-label for="no_kk">
+            <x-input-label for="no_kk" class="text-white">
                 No. KK
             </x-input-label>
             <x-text-input id="no_kk" class="block mt-1 w-full" type="text" name="no_kk" :value="old('no_kk')" required
@@ -17,7 +17,7 @@
 
         {{-- No. Wa --}}
         <div class="mt-4">
-            <x-input-label for="no_wa">
+            <x-input-label for="no_wa" class="text-white">
                 No. WhatsApp
             </x-input-label>
             <x-text-input id="no_wa" class="block mt-1 w-full" type="text" name="no_wa" :value="old('no_wa')"
@@ -25,7 +25,7 @@
             <x-input-error :messages="$errors->get('no_wa')" class="mt-2" />
         </div>
 
-        <x-primary-button class="w-full mt-4 rounded-md justify-center">
+        <x-primary-button class="w-full mt-8 rounded-md justify-center bg-blue-700">
             Submit
         </x-primary-button>
     </form>

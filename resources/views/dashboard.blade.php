@@ -5,7 +5,7 @@ window.location.href = "{{ route('post-register') }}";
 @else
 <x-app-layout>
     <x-slot name="header">
-        <div class="text-left mb-2">
+        <div class="text-left mb-2 bg-white">
             <h3 class="text-2xl font-semibold text-gray-800">
                 Selamat datang, <span class="text-blue-500">{{ Auth::user()->name }}</span>
             </h3>

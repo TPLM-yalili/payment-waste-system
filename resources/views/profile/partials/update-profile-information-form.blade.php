@@ -27,14 +27,14 @@
         <div>
             <x-input-label for="no_kk" :value="__('No. KK')" />
             <p class="text-xs text-error">*harap diisi sesuai dengan No. KK Anda</p>
-            <x-text-input id="no_kk" name="no_kk" type="text" class="mt-1 block w-full" :value="old('no_kk', $user->no_kk)" required autofocus autocomplete="no_kk" />
+            <x-text-input id="no_kk" name="no_kk" type="text" maxlength="16" inputmode="numeric" pattern="[0-9]*" class="mt-1 block w-full" :value="old('no_kk', $user->no_kk)" required autofocus autocomplete="no_kk" />
             <x-input-error class="mt-2" :messages="$errors->get('no_kk')" />
         </div>
 
         <div>
             <x-input-label for="no_wa" :value="__('No. WhatsApp')" />
             <p class="text-xs text-error">*harap diisi sesuai dengan Nomor WhatsApp Anda</p>
-            <x-text-input id="no_wa" name="no_wa" type="text" class="mt-1 block w-full" :value="old('no_wa', $user->no_wa)" required autofocus autocomplete="no_wa" />
+            <x-text-input id="no_wa" name="no_wa" type="text" maxlength="12" inputmode="numeric" pattern="[0-9]*" class="mt-1 block w-full" :value="old('no_wa', $user->no_wa)" required autofocus autocomplete="no_wa" />
             <x-input-error class="mt-2" :messages="$errors->get('no_wa')" />
         </div>
 

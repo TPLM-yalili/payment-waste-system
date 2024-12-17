@@ -10,7 +10,7 @@
             <x-input-label for="no_kk" class="text-black">
                 No. KK
             </x-input-label>
-            <x-text-input id="no_kk" class="block mt-1 w-full" type="text" name="no_kk" :value="old('no_kk')" required
+            <x-text-input id="no_kk" maxlength="16" inputmode="numeric" pattern="[0-9]*" class="block mt-1 w-full" type="text" name="no_kk" :value="old('no_kk')" required
                 autofocus />
             <x-input-error :messages="$errors->get('no_kk')" class="mt-2" />
         </div>
@@ -20,7 +20,7 @@
             <x-input-label for="no_wa" class="text-black">
                 No. WhatsApp
             </x-input-label>
-            <x-text-input id="no_wa" class="block mt-1 w-full" type="text" name="no_wa" :value="old('no_wa')"
+            <x-text-input id="no_wa" maxlength="12" inputmode="numeric" pattern="[0-9]*" class="block mt-1 w-full" type="text" name="no_wa" :value="old('no_wa')"
                 required />
             <x-input-error :messages="$errors->get('no_wa')" class="mt-2" />
         </div>

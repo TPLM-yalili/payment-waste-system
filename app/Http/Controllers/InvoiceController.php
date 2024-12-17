@@ -19,8 +19,9 @@ class InvoiceController extends Controller
             ->where('status', 'pending')
             ->orderBy('due_date', 'desc')
             ->get();
+        $isVerified = auth()->user()->is_verified;
 
-        return view('dashboard', compact('invoices'));
+        return view('dashboard', compact('invoices', 'isVerified'));
     }
 
     public function handleMidtransWebhook(Request $request)

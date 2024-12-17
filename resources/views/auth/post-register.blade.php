@@ -7,7 +7,7 @@
 
         {{-- No. KK --}}
         <div>
-            <x-input-label for="no_kk" class="text-white">
+            <x-input-label for="no_kk" class="text-black">
                 No. KK
             </x-input-label>
             <x-text-input id="no_kk" class="block mt-1 w-full" type="text" name="no_kk" :value="old('no_kk')" required
@@ -17,7 +17,7 @@
 
         {{-- No. Wa --}}
         <div class="mt-4">
-            <x-input-label for="no_wa" class="text-white">
+            <x-input-label for="no_wa" class="text-black">
                 No. WhatsApp
             </x-input-label>
             <x-text-input id="no_wa" class="block mt-1 w-full" type="text" name="no_wa" :value="old('no_wa')"

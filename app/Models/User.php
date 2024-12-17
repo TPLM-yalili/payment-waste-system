@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'no_kk',
         'no_wa',
+        'is_verified',
         'google_id'
     ];
 

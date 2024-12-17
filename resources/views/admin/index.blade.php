@@ -9,7 +9,7 @@
             @include('layouts.navigation')
 
             <!-- Cards Section -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
                 <!-- Pending Invoices Card -->
                 <div class="bg-white p-6 shadow-md rounded-lg">
                     <h2 class="text-xl font-semibold text-gray-700">Pending Invoices</h2>
@@ -20,6 +20,12 @@
                 <div class="bg-white p-6 shadow-md rounded-lg">
                     <h2 class="text-xl font-semibold text-gray-700">Total Users</h2>
                     <p class="text-2xl font-bold text-green-600 mt-2">{{ $usersCount }}</p>
+                </div>
+                
+                <!-- Unverified Users Count Card -->
+                <div class="bg-white p-6 shadow-md rounded-lg">
+                    <h2 class="text-xl font-semibold text-gray-700">Unverified Users</h2>
+                    <p class="text-2xl font-bold text-green-600 mt-2">{{ $unverifiedUsersCount }}</p>
                 </div>
 
                 <!-- Paid Invoices Amount Card -->

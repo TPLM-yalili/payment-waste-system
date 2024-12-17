@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
     <div class="flex h-screen bg-gray-100">
         <!-- Sidebar -->
         <div class="w-64 bg-blue-100 shadow-lg">
@@ -22,9 +22,12 @@
                     <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
                         <a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
                     </li>
+                    <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer bg-blue-200 font-semibold">Super Admin Info</li>
                     <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
-                        <a href="{{ route('super.admin.info') }}" class="text-blue-500 hover:text-blue-700">Super Admin
-                            Info</a>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full text-left">Logout</button>
+                        </form>
                     </li>
                 </ul>
             </nav>
@@ -91,4 +94,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>

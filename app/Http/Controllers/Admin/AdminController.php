@@ -118,7 +118,7 @@ class AdminController extends Controller
         return redirect()->route('super.admin.dashboard')->with('success', 'Admin berhasil ditambahkan!');
     }
 
-    public function updateSuperAdminInfo(Request $request)
+    public function updateAdminInfo(Request $request, $redirectRoute = 'admin.info')
     {
         $user = Auth::guard('admin')->user();
 
@@ -130,7 +130,12 @@ class AdminController extends Controller
             'username' => $request->username,
         ]);
 
-        return redirect()->route('super.admin.info')->with('success', 'Info akun berhasil diperbarui!');
+        return redirect()->route($redirectRoute)->with('success', 'Info akun berhasil diperbarui!');
+    }
+
+    public function updateSuperAdminInfo(Request $request)
+    {
+        return $this->updateAdminInfo($request, 'super.admin.info');
     }
 
     public function updatePassword(Request $request)
@@ -163,6 +168,9 @@ class AdminController extends Controller
 
         // Mengambil jumlah pengguna
         $usersCount = User::count();
+        
+        // Mengambil jumlah pengguna yang belum terverifikasi
+        $unverifiedUsersCount = User::where('is_verified', false)->count();
 
         // Mengambil total amount dari invoices yang terbayar
         $paidInvoicesAmount = Invoice::where('status', 'paid')->sum('amount');
@@ -172,8 +180,25 @@ class AdminController extends Controller
         return view('admin.index', [
             'pendingInvoicesCount' => $pendingInvoicesCount,
             'usersCount' => $usersCount,
+            'unverifiedUsersCount' => $unverifiedUsersCount,
             'paidInvoicesAmount' => $paidInvoicesAmount,
             'pendingInvoices' => $pendingInvoices,
         ]); // Dashboard khusus admin
+    }
+
+    public function adminInfo()
+    {
+        return view('admin.info');
+    }
+
+    public function adminUsersList()
+    {
+        $users = User::all();
+        return view('admin.users-list', ['users' => $users]);
+    }
+
+    public function adminBills()
+    {
+        return view('admin.bills');
     }
 }

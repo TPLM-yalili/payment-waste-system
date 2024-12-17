@@ -1,5 +1,5 @@
 <!-- resources/views/components/admin-sidebar.blade.php -->
-<div class="bg-blue-700 shadow-lg w-full text-white h-screens md:w-64">
+<div class="bg-blue-700 shadow-lg w-full text-white h-screen md:w-64">
     <!-- Logo Section -->
     <div class="flex items-center justify-center py-6">
         <span class="text-xl font-bold text-white sidebar-toggle">Kapays</span>
@@ -16,15 +16,17 @@
     <!-- Navigation Menu -->
     <nav class="mt-6 px-4 text-white">
         <ul class="space-y-3">
-            <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">Dashboard</li>
             <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
-                <a href="{{ route('super.admin.info') }}">List Pengguna</a>
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
             </li>
             <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
-                <a href="{{ route('super.admin.info') }}">Tagihan</a>
+                <a href="{{ route('admin.users-list') }}">List Pengguna</a>
             </li>
             <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
-                <a href="{{ route('super.admin.info') }}">Pengaturan</a>
+                <a href="{{ route('admin.bills') }}">Tagihan</a>
+            </li>
+            <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
+                <a href="{{ route('admin.info') }}">Pengaturan</a>
             </li>
             <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
                 <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">

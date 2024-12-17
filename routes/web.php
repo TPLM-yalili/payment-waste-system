@@ -67,7 +67,11 @@ Route::prefix('admin')->group(function () {
     // Admin 
     Route::middleware(['auth:admin', RoleMiddleware::class . ':admin'])->group(function () {
         Route::get('/', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
-        Route::get('/admin/info', [AdminController::class, 'adminInfo'])->name('admin.info');
+        Route::get('/info', [AdminController::class, 'adminInfo'])->name('admin.info');
+        Route::get('/users-list', [AdminController::class, 'adminUsersList'])->name('admin.users-list');
+        Route::get('/bills', [AdminController::class, 'adminBills'])->name('admin.bills');
+        Route::put('/info', [AdminController::class, 'updateAdminInfo'])->name('admin.update');
+        Route::put('/password', [AdminController::class, 'updatePassword'])->name('admin.password.update');
     });
 
     Route::post('/logout', function () {

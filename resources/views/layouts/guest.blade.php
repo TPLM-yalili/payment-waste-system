@@ -1,3 +1,5 @@
+@props(['tag_line'])
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -23,7 +25,7 @@
             <x-application-logo class="w-12 h-12 md:w-16 md:h-16 lg:w-16 lg:h-16 mb-6 rounded-lg fill-current text-gray-500 md:ml-0 lg:ml-0" />
             <h1 class="text-5xl font-bold mb-3">Login ke Kapays!</h1>
             <p class="py-3 hidden md:block">
-                Untuk melanjutkan ke Kapays, silahkan login terlebih dahulu menggunakan akun Google Anda.
+                {{ $tag_line ?? 'Untuk melanjutkan ke Kapays, silahkan login terlebih dahulu menggunakan akun Google Anda.' }}
             </p>
         </div>
         <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">

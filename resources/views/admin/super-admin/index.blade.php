@@ -19,7 +19,7 @@
             <!-- Navigation Menu -->
             <nav class="mt-6 px-4">
                 <ul class="space-y-3">
-                    <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">Dashboard</li>
+                    <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer bg-blue-200 font-semibold">Dashboard</li>
                     <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
                         <a href="{{ route('super.admin.info') }}">Super Admin Info</a>
                     </li>

@@ -17,8 +17,9 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $invoices = Invoice::where('user_id', auth()->id())->get();
-    return view('dashboard', compact('invoices'));
+    $invoices = Invoice::where('user_id', auth()->id())->get();  // Mengambil semua invoice milik user yang sedang login
+    $isVerified = auth()->user()->is_verified;  // Mengambil nilai 'is_verified' dari user yang sedang login    
+    return view('dashboard', compact('invoices', 'isVerified'));  // Melemparkan data ke view 'dashboard'
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -73,6 +74,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/bills', [AdminController::class, 'adminBills'])->name('admin.bills');
         Route::put('/info', [AdminController::class, 'updateAdminInfo'])->name('admin.update');
         Route::put('/password', [AdminController::class, 'updatePassword'])->name('admin.password.update');
+        Route::post('/user/{user}/verify', [AdminController::class, 'verifyUser'])->name('admin.verify.user');
+        Route::delete('/user/{user}', [AdminController::class, 'destroyUser'])->name('admin.delete.user');
     });
 
     Route::post('/logout', function () {

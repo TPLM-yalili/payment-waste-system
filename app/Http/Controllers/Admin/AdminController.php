@@ -76,14 +76,14 @@ class AdminController extends Controller
             'username' => 'required|string|max:255',
             'password' => 'nullable|string|min:6|confirmed', // Pastikan password di-validasi
         ]);
-    
+
         $admin = Admin::findOrFail($id);
         $admin->username = $request->input('username');
-    
+
         if ($request->filled('password')) {
             $admin->password = bcrypt($request->input('password')); // Enkripsi password
         }
-    
+
         $admin->save();
 
         return redirect()->route('super.admin.dashboard')->with('success', 'Admin updated successfully');
@@ -168,7 +168,7 @@ class AdminController extends Controller
 
         // Mengambil jumlah pengguna
         $usersCount = User::count();
-        
+
         // Mengambil jumlah pengguna yang belum terverifikasi
         $unverifiedUsersCount = User::where('is_verified', false)->count();
 
@@ -200,5 +200,19 @@ class AdminController extends Controller
     public function adminBills()
     {
         return view('admin.bills');
+    }
+
+    public function verifyUser(User $user)
+    {
+        $user->is_verified = true;
+        $user->save();
+
+        return redirect()->route('admin.users-list')->with('success', 'Pengguna berhasil diverifikasi!');
+    }
+
+    public function destroyUser(User $user)
+    {
+        $user->delete();
+        return redirect()->route('admin.users-list')->with('success', 'Pengguna berhasil dihapus!');
     }
 }

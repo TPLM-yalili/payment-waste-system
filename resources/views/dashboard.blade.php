@@ -16,6 +16,12 @@ window.location.href = "{{ route('post-register') }}";
     <div class="py-6 bg-white h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-lg sm:rounded-lg p-6">
+                {{-- @if($isVerified)
+                <p>verified</p>
+                @else
+                <p>not verified</p>
+                @endif --}}
+
                 <!-- Sambutan User -->
                 @if($invoices->every(fn($invoice) => $invoice->status === 'paid'))
                 <div class="bg-green-50 p-6 rounded-lg shadow-md mb-6">

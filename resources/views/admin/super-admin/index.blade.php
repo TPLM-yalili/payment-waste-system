@@ -76,12 +76,11 @@
                                 </td>
                                 <td class="border border-gray-300 p-4 flex items-center space-x-4">
                                     <!-- Edit Button -->
-                                    <a href="#" class="text-yellow-500 hover:text-yellow-600"
+                                    <a href="#" class="btn btn-ghost hover:text-yellow-600"
                                         onclick="document.getElementById('edit-modal-{{ $admin->id }}').classList.remove('hidden')">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M11 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V9l-6-6z" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                            <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
+                                            <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
                                         </svg>
                                     </a>
 
@@ -90,12 +89,10 @@
                                         class="inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline"
+                                        <button type="submit" class="btn btn-ghost hover:text-error"
                                             onclick="return confirm('Yakin ingin menghapus admin ini?')">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M6 18L18 6M6 6l12 12" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                                <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                             </svg>
                                         </button>
                                     </form>

@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="/auth/post-register" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
@@ -72,7 +72,7 @@
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                >{{ __('Data berhasil diperbarui!') }}</p>
             @endif
         </div>
     </form>

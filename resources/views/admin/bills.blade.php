@@ -55,6 +55,7 @@
                 <input type="radio" name="my-accordion-2" checked="checked" />
                 <div class="collapse-title text-xl font-medium">
                     <h1 class="text-2xl font-semibold">Daftar Invoice Pending</h1>
+                    <hr class="bg-gray-700 border-1 rounded my-2">
                 </div>
                     <div class="collapse-content">
                         <!-- Pending Invoices Table -->
@@ -90,6 +91,7 @@
                     <input type="radio" name="my-accordion-2" />
                     <div class="collapse-title text-xl font-medium">
                         <h1 class="text-2xl font-semibold">Daftar Invoice Paid</h1>
+                        <hr class="bg-gray-700 border-1 rounded my-2">
                     </div>
                     <div class="collapse-content">
                         <!-- Paid Invoices Table -->
@@ -127,6 +129,7 @@
                     <input type="radio" name="my-accordion-2" />
                     <div class="collapse-title text-xl font-medium">
                         <h1 class="text-2xl font-semibold">Daftar Invoice Failed</h1>
+                        <hr class="bg-gray-700 border-1 rounded my-2">
                     </div>
                     <div class="collapse-content">
                         <!-- Failed Invoices Table -->

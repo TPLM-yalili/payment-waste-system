@@ -240,3 +240,4 @@ class AdminController extends Controller
 
         return view('admin.bills', compact('pendingInvoices','pendingInvoices', 'paidInvoices', 'failedInvoices'));
     }
+}

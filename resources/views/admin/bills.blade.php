@@ -6,7 +6,6 @@
         <!-- Main Content Area -->
         <div class="flex-1 bg-gray-100 p-4">
 
-            @include('layouts.navigation')
             <!-- Success or Error message -->
             @if(session('success'))
             <div class="alert alert-success">
@@ -19,12 +18,6 @@
                 {{ session('error') }}
             </div>
             @endif
-
-            <!-- Button to generate invoices -->
-            <form action="{{ route('generate.invoices') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-primary mt-5">Buat Tagihan Bulanan</button>
-            </form>
 
             <!-- Cards Section (Optional - you can add your stats here if needed) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
@@ -45,6 +38,17 @@
                     <h2 class="text-xl font-semibold text-gray-700">Failed Invoices</h2>
                     <p class="text-2xl font-bold text-red-600 mt-2">{{ $failedInvoices->count() }}</p>
                 </div>
+
+                <!-- Button to generate invoices -->
+                <form action="{{ route('generate.invoices') }}" method="POST" class="bg-white shadow-md rounded-lg">
+                    @csrf
+                    <button type="submit" class="btn btn-primary w-full h-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                        <span class="text-lg font-medium">Buat Tagihan Bulanan</span>
+                    </button>
+                </form>
             </div>
 
             <div class="collapse collapse-arrow bg-base-200 mt-8">

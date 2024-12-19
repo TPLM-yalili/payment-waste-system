@@ -23,7 +23,7 @@
             <!-- Button to generate invoices -->
             <form action="{{ route('generate.invoices') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-primary">Buat Tagihan Bulanan</button>
+                <button type="submit" class="btn btn-primary mt-5">Buat Tagihan Bulanan</button>
             </form>
 
             <!-- Cards Section (Optional - you can add your stats here if needed) -->

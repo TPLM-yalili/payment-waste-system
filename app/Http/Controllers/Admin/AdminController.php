@@ -198,8 +198,8 @@ class AdminController extends Controller
         $users = User::all();
         return view('admin.users-list', ['users' => $users]);
     }
-  
-      public function verifyUser(User $user)
+
+    public function verifyUser(User $user)
     {
         $user->is_verified = true;
         $user->save();
@@ -238,6 +238,6 @@ class AdminController extends Controller
             $invoice->due_date = Carbon::createFromFormat('Y-m-d', $invoice->due_date)->translatedFormat('d F Y');
         }
 
-        return view('admin.bills', compact('pendingInvoices','pendingInvoices', 'paidInvoices', 'failedInvoices'));
+        return view('admin.bills', compact('pendingInvoices', 'pendingInvoices', 'paidInvoices', 'failedInvoices'));
     }
 }

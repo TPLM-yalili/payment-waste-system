@@ -69,8 +69,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
         Route::get('/info', [AdminController::class, 'adminInfo'])->name('admin.info');
         Route::get('/users-list', [AdminController::class, 'adminUsersList'])->name('admin.users-list');
+        Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+            Route::get('/users', [AdminController::class, 'index'])->name('users.list');
+            Route::post('/users/{user}/verify', [AdminController::class, 'verifyUser'])->name('verify.user');
+            Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('delete.user');
+        });
         Route::get('/bills', [AdminController::class, 'adminBills'])->name('admin.bills');
-        // Route for generating invoices
         Route::post('/generate-invoices', [InvoiceController::class, 'generateInvoices'])->name('generate.invoices');
         Route::put('/info', [AdminController::class, 'updateAdminInfo'])->name('admin.update');
         Route::put('/password', [AdminController::class, 'updatePassword'])->name('admin.password.update');

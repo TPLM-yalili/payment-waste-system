@@ -8,17 +8,29 @@
 
             @include('layouts.navigation')
 
-            <!-- Success message for invoice generation -->
             @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
             @endif
 
+            <!-- Success or Error message -->
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
+            </div>
+            @endif
+
             <!-- Button to generate invoices -->
             <form action="{{ route('generate.invoices') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-primary">Generate Monthly Invoices</button>
+                <button type="submit" class="btn btn-primary">Buat Tagihan Bulanan</button>
             </form>
 
             <!-- Cards Section (Optional - you can add your stats here if needed) -->

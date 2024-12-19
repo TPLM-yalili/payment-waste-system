@@ -7,13 +7,6 @@
         <div class="flex-1 bg-gray-100 p-4">
 
             @include('layouts.navigation')
-
-            @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-            @endif
-
             <!-- Success or Error message -->
             @if(session('success'))
             <div class="alert alert-success">

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Invoice;
+use App\Services\InvoiceService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -76,14 +78,14 @@ class AdminController extends Controller
             'username' => 'required|string|max:255',
             'password' => 'nullable|string|min:6|confirmed', // Pastikan password di-validasi
         ]);
-    
+
         $admin = Admin::findOrFail($id);
         $admin->username = $request->input('username');
-    
+
         if ($request->filled('password')) {
             $admin->password = bcrypt($request->input('password')); // Enkripsi password
         }
-    
+
         $admin->save();
 
         return redirect()->route('super.admin.dashboard')->with('success', 'Admin updated successfully');
@@ -168,7 +170,7 @@ class AdminController extends Controller
 
         // Mengambil jumlah pengguna
         $usersCount = User::count();
-        
+
         // Mengambil jumlah pengguna yang belum terverifikasi
         $unverifiedUsersCount = User::where('is_verified', false)->count();
 
@@ -197,8 +199,31 @@ class AdminController extends Controller
         return view('admin.users-list', ['users' => $users]);
     }
 
-    public function adminBills()
+    public function adminBills(Request $request)
     {
-        return view('admin.bills');
+        // Retrieve invoice data by status
+        $pendingInvoices = Invoice::where('status', 'pending')->get();
+        $paidInvoices = Invoice::where('status', 'paid')->get();
+        $failedInvoices = Invoice::where('status', 'failed')->get();
+
+        // Format 'bulan' and 'due_date' for pending invoices
+        foreach ($pendingInvoices as $invoice) {
+            $invoice->bulan = Carbon::createFromFormat('Y-m-d', $invoice->bulan)->translatedFormat('d F Y');
+            $invoice->due_date = Carbon::createFromFormat('Y-m-d', $invoice->due_date)->translatedFormat('d F Y');
+        }
+
+        // Format 'bulan', 'due_date', and 'updated_at' for paid invoices
+        foreach ($paidInvoices as $invoice) {
+            $invoice->bulan = Carbon::createFromFormat('Y-m-d', $invoice->bulan)->translatedFormat('d F Y');
+            $invoice->due_date = Carbon::createFromFormat('Y-m-d', $invoice->due_date)->translatedFormat('d F Y');
+        }
+
+        // Format 'bulan' and 'due_date' for failed invoices
+        foreach ($failedInvoices as $invoice) {
+            $invoice->bulan = Carbon::createFromFormat('Y-m-d', $invoice->bulan)->translatedFormat('d F Y');
+            $invoice->due_date = Carbon::createFromFormat('Y-m-d', $invoice->due_date)->translatedFormat('d F Y');
+        }
+
+        return view('admin.bills', compact('pendingInvoices','pendingInvoices', 'paidInvoices', 'failedInvoices'));
     }
 }

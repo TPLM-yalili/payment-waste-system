@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Invoice;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Midtrans\Snap;
 use Midtrans\Config;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\PaymentSuccessNotification;
 use App\Notifications\InvoiceReminderNotification;
+
 
 class InvoiceController extends Controller
 {
@@ -178,5 +181,25 @@ class InvoiceController extends Controller
         }
 
         return view('payments.pending', compact('invoice'));
+    }
+
+    // Method to handle invoice generation command
+    public function generateInvoices(Request $request)
+    {
+        // Get all users
+        $users = User::all();
+
+        foreach ($users as $user) {
+            // Create a new invoice for each user
+            Invoice::create([
+                'user_id' => $user->id,
+                'order_id' => 'INV-' . uniqid(),
+                'amount' => 100000, // Amount for the invoice
+                'due_date' => Carbon::now()->addMonth()->startOfMonth(),
+            ]);
+        }
+
+        // Redirect back with a success message
+        return redirect()->route('admin.bills')->with('success', 'Monthly invoices have been generated successfully!');
     }
 }

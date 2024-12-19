@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class GenerateMonthlyInvoices extends Command
 {
     protected $signature = 'invoices:generate';
-    protected $description = 'Generate monthly invoices for all users based on their no_kk';
+    protected $description = 'Hasilkan faktur bulanan untuk semua pengguna berdasarkan no_kk mereka';
 
     public function __construct()
     {
@@ -30,6 +30,6 @@ class GenerateMonthlyInvoices extends Command
             ]);
         }
 
-        $this->info('Monthly invoices have been generated successfully!');
+        $this->info('Tagihan bulanan sukses untuk dikirimkan ke pengguna yang terdaftar!');
     }
 }

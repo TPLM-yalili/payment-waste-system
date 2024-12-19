@@ -190,6 +190,20 @@ class InvoiceController extends Controller
         // Get all users
         $users = User::all();
 
+        // Validasi jika tidak ada pengguna yang terdaftar
+        if ($users->isEmpty()) {
+            return redirect()->back()->with('error', 'User tidak tersedia, tidak bisa membuat invoice.');
+        }
+
+        // Validasi jika invoice sudah dibuat bulan ini
+        $lastInvoice = Invoice::whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)
+            ->first();
+
+        if ($lastInvoice) {
+            return redirect()->back()->with('error', 'Mohon maaf, Anda hanya bisa membuat invoice satu kali sebulan.');
+        }
+
         foreach ($users as $user) {
             // Create a new invoice for each user
             Invoice::create([
@@ -201,6 +215,6 @@ class InvoiceController extends Controller
         }
 
         // Redirect back with a success message
-        return redirect()->route('admin.bills')->with('success', 'Monthly invoices have been generated successfully!');
+        return redirect()->route('admin.bills')->with('success', 'Invoice berhasil dibuat untuk semua pengguna.');
     }
 }

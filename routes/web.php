@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProfileController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Auth\PostRegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Artisan;
 use App\Models\Invoice;
 
 
@@ -39,9 +41,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/midtrans/webhook', [InvoiceController::class, 'handleMidtransWebhook']);
     // web.php
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-
-
-
 });
 
 Route::prefix('auth')->group(function () {
@@ -71,6 +70,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/info', [AdminController::class, 'adminInfo'])->name('admin.info');
         Route::get('/users-list', [AdminController::class, 'adminUsersList'])->name('admin.users-list');
         Route::get('/bills', [AdminController::class, 'adminBills'])->name('admin.bills');
+        // Route for generating invoices
+        Route::post('/generate-invoices', [InvoiceController::class, 'generateInvoices'])->name('generate.invoices');
         Route::put('/info', [AdminController::class, 'updateAdminInfo'])->name('admin.update');
         Route::put('/password', [AdminController::class, 'updatePassword'])->name('admin.password.update');
     });

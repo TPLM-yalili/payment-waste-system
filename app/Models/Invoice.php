@@ -9,21 +9,30 @@ class Invoice extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Pastikan tidak ada properti `timestamps` yang diubah
+    public $timestamps = true; // Ini secara default adalah true, tetapi pastikan ini tidak diubah
+
+    // Kolom yang dapat diisi
     protected $fillable = [
-        'user_id',       // User yang terkait dengan invoice
-        'order_id',      // ID pesanan
-        'amount',        // Jumlah tagihan
-        'status',        // Status pembayaran
-        'due_date',      // Tanggal jatuh tempo
+        'user_id', 'order_id', 'amount', 'status', 'due_date', 'bulan'
     ];
 
+    // Relasi dengan user
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Event untuk otomatis mengisi kolom 'bulan'
+    protected static function booted()
+    {
+        static::saving(function ($invoice) {
+            if (!$invoice->created_at) {
+                // Mengatur kolom 'bulan' berdasarkan 'created_at'
+                $invoice->bulan = now()->format('Y-m-d');
+            } else {
+                $invoice->bulan = $invoice->created_at->format('Y-m-d');
+            }
+        });
     }
 }

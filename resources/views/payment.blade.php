@@ -10,20 +10,20 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900">Halaman Pembayaran</h3>
                 <div id="snap-button"></div>
-
-                <script type="text/javascript" src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+                <script type="text/javascript" src="https://app.midtrans.com/snap/snap.js"
+                    data-client-key="{{ config('midtrans.client_key') }}"></script>
                 <script type="text/javascript">
-                    snap.pay('{{ $snapToken }}', {
-                        onSuccess: function(result) {
-                            window.location.href = '{{ route("payment.success") }}?order_id=' + result.order_id;
-                        },
-                        onPending: function(result) {
-                            alert('Pembayaran masih dalam proses');
-                        },
-                        onError: function(result) {
-                            alert('Pembayaran gagal');
-                        }
-                    });
+                snap.pay('{{ $snapToken }}', {
+                    onSuccess: function(result) {
+                        window.location.href = '{{ route("payment.success") }}?order_id=' + result.order_id;
+                    },
+                    onPending: function(result) {
+                        alert('Pembayaran masih dalam proses');
+                    },
+                    onError: function(result) {
+                        alert('Pembayaran gagal');
+                    }
+                });
                 </script>
             </div>
         </div>

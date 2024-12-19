@@ -6,8 +6,6 @@
         <!-- Main Content Area -->
         <div class="flex-1 bg-gray-100 p-4">
 
-            @include('layouts.navigation')
-
             <!-- Cards Section -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
                 <!-- Pending Invoices Card -->

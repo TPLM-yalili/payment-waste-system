@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,18 +25,37 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        $request->validate([
+            'no_kk' => 'required',
+            'no_wa' => 'required',
+        ]);
 
-        $request->user()->save();
+        $user = User::find(Auth::id());
+
+        $user->name = $request->name;
+        $user->no_kk = $request->no_kk;
+        $user->no_wa = $request->no_wa;
+
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
+
+    // public function update(ProfileUpdateRequest $request): RedirectResponse
+    // {
+    //     $request->user()->fill($request->validated());
+
+    //     if ($request->user()->isDirty('email')) {
+    //         $request->user()->email_verified_at = null;
+    //     }
+
+    //     $request->user()->save();
+
+    //     return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    // }
 
     /**
      * Delete the user's account.

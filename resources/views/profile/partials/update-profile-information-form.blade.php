@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
+            {{ __('Informasi Akun') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Harap isi informasi akun Anda berikut sesuai dengan data Anda.") }}
         </p>
     </header>
 
@@ -18,12 +18,27 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('Nama')" />
+            <p class="text-xs text-error">*harap nama sesuai KTP</p>
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
+            <x-input-label for="no_kk" :value="__('No. KK')" />
+            <p class="text-xs text-error">*harap diisi sesuai dengan No. KK Anda</p>
+            <x-text-input id="no_kk" name="no_kk" type="text" maxlength="16" inputmode="numeric" pattern="[0-9]*" class="mt-1 block w-full" :value="old('no_kk', $user->no_kk)" required autofocus autocomplete="no_kk" />
+            <x-input-error class="mt-2" :messages="$errors->get('no_kk')" />
+        </div>
+
+        <div>
+            <x-input-label for="no_wa" :value="__('No. WhatsApp')" />
+            <p class="text-xs text-error">*harap diisi sesuai dengan Nomor WhatsApp Anda</p>
+            <x-text-input id="no_wa" name="no_wa" type="text" maxlength="12" inputmode="numeric" pattern="[0-9]*" class="mt-1 block w-full" :value="old('no_wa', $user->no_wa)" required autofocus autocomplete="no_wa" />
+            <x-input-error class="mt-2" :messages="$errors->get('no_wa')" />
+        </div>
+
+        <!-- <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
@@ -45,7 +60,7 @@
                     @endif
                 </div>
             @endif
-        </div>
+        </div> -->
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
@@ -57,7 +72,7 @@
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                >{{ __('Data berhasil diperbarui!') }}</p>
             @endif
         </div>
     </form>

@@ -1,7 +1,7 @@
 <x-admin-layout>
     <div class="flex">
         <!-- Sidebar Component -->
-        @include('components.admin-sidebar')
+        <x-admin-sidebar />
 
         <!-- Main Content Area -->
         <div class="flex-1 bg-gray-100 p-4">
@@ -25,7 +25,7 @@
                 <!-- Unverified Users Count Card -->
                 <div class="bg-white p-6 shadow-md rounded-lg">
                     <h2 class="text-xl font-semibold text-gray-700">Unverified Users</h2>
-                    <p class="text-2xl font-bold text-green-600 mt-2">{{ $unverifiedUsersCount }}</p>
+                    <p class="text-2xl font-bold text-yellow-600 mt-2">{{ $unverifiedUsersCount }}</p>
                 </div>
 
                 <!-- Paid Invoices Amount Card -->

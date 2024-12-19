@@ -24,6 +24,7 @@ class PostRegisterController extends Controller
 
         $user = User::find(Auth::id());
 
+        // $user->name = $request->name;
         $user->no_kk = $request->no_kk;
         $user->no_wa = $request->no_wa;
 

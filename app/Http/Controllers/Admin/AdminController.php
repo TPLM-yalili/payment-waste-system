@@ -198,6 +198,20 @@ class AdminController extends Controller
         $users = User::all();
         return view('admin.users-list', ['users' => $users]);
     }
+  
+      public function verifyUser(User $user)
+    {
+        $user->is_verified = true;
+        $user->save();
+
+        return redirect()->route('admin.users-list')->with('success', 'Pengguna berhasil diverifikasi!');
+    }
+
+    public function destroyUser(User $user)
+    {
+        $user->delete();
+        return redirect()->route('admin.users-list')->with('success', 'Pengguna berhasil dihapus!');
+    }
 
     public function adminBills(Request $request)
     {
@@ -226,4 +240,3 @@ class AdminController extends Controller
 
         return view('admin.bills', compact('pendingInvoices','pendingInvoices', 'paidInvoices', 'failedInvoices'));
     }
-}

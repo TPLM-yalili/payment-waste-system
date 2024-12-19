@@ -19,7 +19,7 @@ class GenerateMonthlyInvoices extends Command
 
     public function handle()
     {
-        $users = User::all(); // Ambil semua user
+        $users = User::where('is_verified', true)->get(); // Ambil semua user yang sudah terverifikasi
 
         foreach ($users as $user) {
             Invoice::create([

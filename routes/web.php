@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     // Post register
     Route::get('/auth/post-register', [PostRegisterController::class, 'index'])->name('post-register');
     Route::post('/auth/post-register', [PostRegisterController::class, 'update']);
+    Route::patch('/auth/post-register', [PostRegisterController::class, 'update'])->name('post-register.update');
 
     Route::get('/dashboard', [InvoiceController::class, 'index'])->name('dashboard');
     Route::get('/invoice/pay/{invoiceId}', [InvoiceController::class, 'payInvoice'])->name('invoice.pay');

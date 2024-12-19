@@ -10,6 +10,18 @@
 
             <!-- Tabel Invoices -->
             <h1 class="text-2xl font-semibold mb-6 mt-8">Daftar User terdaftar</h1>
+
+            @if (session('success'))
+                <div role="alert" class="alert alert-success mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current text-white" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>                    
+                    <span class="text-white">{{ session('success') }}</span>
+                </div>
+            @endif
+
+
             <div class="bg-white shadow-md rounded-lg p-6">
                 <table id="users-table" class="stripe hover text-sm w-full">
                     <thead>
@@ -36,13 +48,20 @@
                                 </td>
                                 <td class="py-3 px-4 text-left">
                                     @if (!$user->is_verified)
-                                        <button class="btn bg-green-400">
-                                            verifikasi
-                                        </button>
+                                        <!-- Formulir untuk verifikasi pengguna -->
+                                        <form action="{{ route('admin.verify.user', $user) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn bg-green-400">Verifikasi</button>
+                                        </form>
                                     @endif
-                                    <button class="btn bg-red-500 text-white">
-                                        Hapus
-                                    </button>
+
+                                    <!-- Formulir untuk menghapus pengguna -->
+                                    <form action="{{ route('admin.delete.user', $user) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn bg-red-500 text-white">Hapus</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -53,16 +72,25 @@
     </div>
 
     <script>
-        $(document).ready(function () {
+        function confirmDelete() {
+            return confirm('Apakah Anda yakin ingin menghapus pengguna ini?'); // Menampilkan dialog konfirmasi
+        }
+
+        $(document).ready(function() {
             $('#users-table').DataTable({
                 responsive: true,
                 language: {
                     url: "//cdn.datatables.net/plug-ins/1.13.5/i18n/id.json"
                 },
                 pagingType: "simple_numbers", // Gaya pagination
-                lengthMenu: [[ 10, 25, 50, -1], [10, 25, 50, "All"]],
-                columnDefs: [
-                    { targets: [0], orderable: false }, // Kolom pertama tidak dapat diurutkan
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                columnDefs: [{
+                        targets: [0],
+                        orderable: false
+                    }, // Kolom pertama tidak dapat diurutkan
                 ],
             });
         });

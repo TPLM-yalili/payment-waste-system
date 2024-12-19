@@ -47,95 +47,113 @@
                 </div>
             </div>
 
-            <!-- Pending Invoices Table -->
-            <div class="bg-white shadow-md rounded-lg p-6 mb-8 mt-8">
-            <h1 class="text-2xl font-semibold mb-6">Daftar Invoice Pending</h1>
-                <table id="pendingInvoices" class="stripe hover text-sm w-full">
-                    <thead>
-                        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                            <th class="py-3 px-4 text-left">No.</th>
-                            <th class="py-3 px-4 text-left">User</th>
-                            <th class="py-3 px-4 text-left">Amount</th>
-                            <th class="py-3 px-4 text-left">Status</th>
-                            <th class="py-3 px-4 text-left">Terbit Tagihan</th>
-                            <th class="py-3 px-4 text-left">Jatuh Tempo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($pendingInvoices as $invoice)
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-3 px-4 text-left">{{ $loop->iteration }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->user->name }}</td>
-                            <td class="py-3 px-4 text-left">Rp {{ number_format($invoice->amount, 2, ',', '.') }}</td>
-                            <td class="py-3 px-4 text-left text-yellow-500">{{ ucfirst($invoice->status) }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->bulan }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->due_date }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="collapse collapse-arrow bg-base-200 mt-8">
+                <input type="radio" name="my-accordion-2" checked="checked" />
+                <div class="collapse-title text-xl font-medium">
+                    <h1 class="text-2xl font-semibold">Daftar Invoice Pending</h1>
+                </div>
+                    <div class="collapse-content">
+                        <!-- Pending Invoices Table -->
+                        <div class="bg-white shadow-md rounded-lg p-6">
+                            <table id="pendingInvoices" class="stripe hover text-sm w-full">
+                                <thead>
+                                    <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                        <th class="py-3 px-4 text-left">No.</th>
+                                        <th class="py-3 px-4 text-left">User</th>
+                                        <th class="py-3 px-4 text-left">Amount</th>
+                                        <th class="py-3 px-4 text-left">Status</th>
+                                        <th class="py-3 px-4 text-left">Terbit Tagihan</th>
+                                        <th class="py-3 px-4 text-left">Jatuh Tempo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($pendingInvoices as $invoice)
+                                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                        <td class="py-3 px-4 text-left">{{ $loop->iteration }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->user->name }}</td>
+                                        <td class="py-3 px-4 text-left">Rp {{ number_format($invoice->amount, 2, ',', '.') }}</td>
+                                        <td class="py-3 px-4 text-left text-yellow-500">{{ ucfirst($invoice->status) }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->bulan }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->due_date }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse collapse-arrow bg-base-200">
+                    <input type="radio" name="my-accordion-2" />
+                    <div class="collapse-title text-xl font-medium">
+                        <h1 class="text-2xl font-semibold">Daftar Invoice Paid</h1>
+                    </div>
+                    <div class="collapse-content">
+                        <!-- Paid Invoices Table -->
+                        <div class="bg-white shadow-md rounded-lg p-6">
+                            <table id="paidInvoices" class="stripe hover text-sm w-full">
+                                <thead>
+                                    <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                        <th class="py-3 px-4 text-left">No.</th>
+                                        <th class="py-3 px-4 text-left">User</th>
+                                        <th class="py-3 px-4 text-left">Amount</th>
+                                        <th class="py-3 px-4 text-left">Status</th>
+                                        <th class="py-3 px-4 text-left">Terbit Tagihan</th>
+                                        <th class="py-3 px-4 text-left">Jatuh Tempo</th>
+                                        <th class=" py-3 px-4 text-left">Pelunasan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($paidInvoices as $invoice)
+                                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                        <td class="py-3 px-4 text-left">{{ $loop->iteration }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->user->name }}</td>
+                                        <td class="py-3 px-4 text-left">Rp {{ number_format($invoice->amount, 2, ',', '.') }}</td>
+                                        <td class="py-3 px-4 text-left text-yellow-500">{{ ucfirst($invoice->status) }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->bulan }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->due_date }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->updated_at }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse collapse-arrow bg-base-200">
+                    <input type="radio" name="my-accordion-2" />
+                    <div class="collapse-title text-xl font-medium">
+                        <h1 class="text-2xl font-semibold">Daftar Invoice Failed</h1>
+                    </div>
+                    <div class="collapse-content">
+                        <!-- Failed Invoices Table -->
+                        <div class="bg-white shadow-md rounded-lg p-6">
+                            <table id="failedInvoices" class="stripe hover text-sm w-full">
+                                <thead>
+                                    <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                        <th class="py-3 px-4 text-left">No.</th>
+                                        <th class="py-3 px-4 text-left">User</th>
+                                        <th class="py-3 px-4 text-left">Amount</th>
+                                        <th class="py-3 px-4 text-left">Status</th>
+                                        <th class="py-3 px-4 text-left">Terbit Tagihan</th>
+                                        <th class="py-3 px-4 text-left">Jatuh Tempo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($failedInvoices as $invoice)
+                                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                        <td class="py-3 px-4 text-left">{{ $loop->iteration }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->user->name }}</td>
+                                        <td class="py-3 px-4 text-left">Rp {{ number_format($invoice->amount, 2, ',', '.') }}</td>
+                                        <td class="py-3 px-4 text-left text-yellow-500">{{ ucfirst($invoice->status) }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->bulan }}</td>
+                                        <td class="py-3 px-4 text-left">{{ $invoice->due_date }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
             </div>
-
-            <!-- Paid Invoices Table -->
-            <h1 class="text-2xl font-semibold mb-6">Daftar Invoice Paid</h1>
-            <div class="bg-white shadow-md rounded-lg p-6 mb-8">
-                <table id="paidInvoices" class="stripe hover text-sm w-full">
-                    <thead>
-                        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                            <th class="py-3 px-4 text-left">No.</th>
-                            <th class="py-3 px-4 text-left">User</th>
-                            <th class="py-3 px-4 text-left">Amount</th>
-                            <th class="py-3 px-4 text-left">Status</th>
-                            <th class="py-3 px-4 text-left">Terbit Tagihan</th>
-                            <th class="py-3 px-4 text-left">Jatuh Tempo</th>
-                            <th class=" py-3 px-4 text-left">Pelunasan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($paidInvoices as $invoice)
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-3 px-4 text-left">{{ $loop->iteration }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->user->name }}</td>
-                            <td class="py-3 px-4 text-left">Rp {{ number_format($invoice->amount, 2, ',', '.') }}</td>
-                            <td class="py-3 px-4 text-left text-yellow-500">{{ ucfirst($invoice->status) }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->bulan }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->due_date }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->updated_at }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Failed Invoices Table -->
-            <h1 class="text-2xl font-semibold mb-6">Daftar Invoice Failed</h1>
-            <div class="bg-white shadow-md rounded-lg p-6">
-                <table id="failedInvoices" class="stripe hover text-sm w-full">
-                    <thead>
-                        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                            <th class="py-3 px-4 text-left">No.</th>
-                            <th class="py-3 px-4 text-left">User</th>
-                            <th class="py-3 px-4 text-left">Amount</th>
-                            <th class="py-3 px-4 text-left">Status</th>
-                            <th class="py-3 px-4 text-left">Terbit Tagihan</th>
-                            <th class="py-3 px-4 text-left">Jatuh Tempo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($failedInvoices as $invoice)
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-3 px-4 text-left">{{ $loop->iteration }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->user->name }}</td>
-                            <td class="py-3 px-4 text-left">Rp {{ number_format($invoice->amount, 2, ',', '.') }}</td>
-                            <td class="py-3 px-4 text-left text-yellow-500">{{ ucfirst($invoice->status) }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->bulan }}</td>
-                            <td class="py-3 px-4 text-left">{{ $invoice->due_date }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
         </div>
     </div>
 

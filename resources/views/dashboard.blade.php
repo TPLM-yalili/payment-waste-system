@@ -13,6 +13,12 @@ window.location.href = "{{ route('post-register') }}";
         </div>
     </x-slot>
 
+    <div tabindex="0" class="collapse bg-base-200">
+  <div class="collapse-title text-xl font-medium">Focus me to see content</div>
+  <div class="collapse-content">
+    <p>tabindex="0" attribute is necessary to make the div focusable</p>
+  </div>
+</div>
 
     <div class="py-6 bg-white h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

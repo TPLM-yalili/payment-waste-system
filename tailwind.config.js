@@ -9,6 +9,10 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    daisyui: {
+        themes: ["light"],
+      },
+
     theme: {
         extend: {
             fontFamily: {

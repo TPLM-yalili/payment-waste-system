@@ -48,8 +48,8 @@
             </div>
 
             <!-- Pending Invoices Table -->
-            <h1 class="text-2xl font-semibold mb-6 mt-8">Daftar Invoice Pending</h1>
-            <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+            <div class="bg-white shadow-md rounded-lg p-6 mb-8 mt-8">
+            <h1 class="text-2xl font-semibold mb-6">Daftar Invoice Pending</h1>
                 <table id="pendingInvoices" class="stripe hover text-sm w-full">
                     <thead>
                         <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">

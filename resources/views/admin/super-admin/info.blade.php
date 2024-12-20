@@ -24,10 +24,14 @@
                     </li>
                     <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer bg-blue-200 font-semibold">Super Admin Info</li>
                     <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
-                        <form action="{{ route('logout') }}" method="POST">
+                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                             @csrf
-                            <button type="submit" class="w-full text-left">Logout</button>
                         </form>
+        
+                        <a href="#" class="logout-link mt-4" onclick="event.preventDefault(); 
+                            $('#logout-form').submit();">
+                            Logout
+                        </a>
                     </li>
                 </ul>
             </nav>
@@ -35,12 +39,8 @@
 
         <!-- Main Content -->
         <div class="flex-1 bg-white">
-            @include('layouts.navigation')
-            <div class="px-12 py-6">
-                <h1 class="text-2xl font-bold mb-6">Info Akun Super Admin</h1>
-
-                <!-- Welcome Message -->
-                <p class="text-lg mb-6">Selamat datang, {{ Auth::user()->username }}</p>
+            <div class="px-8 py-6">
+                <h1 class="text-2xl font-bold my-6 pb-6">Info Akun Super Admin</h1>
 
                 {{-- Form Info Akun Super Admin --}}
                 <form action="{{ route('super.admin.update') }}" method="POST" class="space-y-6">

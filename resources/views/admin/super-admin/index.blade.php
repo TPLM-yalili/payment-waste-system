@@ -26,10 +26,14 @@
                         <a href="{{ route('super.admin.info') }}">Super Admin Info</a>
                     </li>
                     <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
-                        <form action="{{ route('logout') }}" method="POST">
+                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                             @csrf
-                            <button type="submit" class="w-full text-left">Logout</button>
                         </form>
+        
+                        <a href="#" class="logout-link mt-4" onclick="event.preventDefault(); 
+                            $('#logout-form').submit();">
+                            Logout
+                        </a>
                     </li>
                 </ul>
             </nav>

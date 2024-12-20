@@ -4,9 +4,8 @@
         @include('components.admin-sidebar')
 
         <!-- Main Content Area -->
-        <div class="flex-1 bg-gray-100 p-4">
-
-            @include('layouts.navigation')
+        <div class="flex-1 bg-gray-100 px-8 py-6">
+            <h1 class="text-2xl font-bold my-6 pb-6">Info Akun Admin</h1>
 
             {{-- Form Info Akun Admin --}}
             <form action="{{ route('admin.update') }}" method="POST" class="space-y-6">

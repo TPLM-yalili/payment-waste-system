@@ -4,12 +4,10 @@
         @include('components.admin-sidebar')
 
         <!-- Main Content Area -->
-        <div class="flex-1 bg-gray-100 p-4">
-
-            @include('layouts.navigation')
+        <div class="flex-1 bg-gray-100 px-8 py-6">
 
             <!-- Tabel Invoices -->
-            <h1 class="text-2xl font-semibold mb-6 mt-8">Daftar User terdaftar</h1>
+            <h1 class="text-2xl font-bold my-6 pb-6">Daftar User terdaftar</h1>
 
             @if (session('success'))
                 <div role="alert" class="alert alert-success mb-4">

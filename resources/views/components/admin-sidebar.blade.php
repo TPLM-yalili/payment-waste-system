@@ -33,11 +33,8 @@
                     @csrf
                 </form>
 
-                <!-- Logout Link with Confirmation -->
                 <a href="#" class="logout-link mt-4" onclick="event.preventDefault(); 
-                    if (confirm('Are you sure you want to log out?')) {
-                        document.getElementById('logout-form').submit();
-                    }">
+                    $('#logout-form').submit();">
                     Logout
                 </a>
             </li>

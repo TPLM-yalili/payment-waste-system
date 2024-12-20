@@ -17,7 +17,18 @@ class AdminController extends Controller
 {
     public function showLoginForm()
     {
-        return view('admin.login'); // Tampilkan halaman login
+        if (Auth::guard('admin')->check()) {
+            $user = Auth::guard('admin')->user();
+    
+            // Cek role pengguna dan arahkan ke dashboard yang sesuai
+            if ($user->role === 'super admin') {
+                return redirect()->route('super.admin.dashboard');
+            } elseif ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+        }
+        
+        return view('admin.login');
     }
 
     public function login(Request $request)
@@ -43,25 +54,19 @@ class AdminController extends Controller
             return redirect()->route('admin.login')->withErrors('Akun ini tidak memiliki akses.');
         }
 
-        return back()->withErrors('Username atau password salah.');
-    }
-
-    public function redirectToDashboard()
-    {
-        $user = Auth::guard('admin')->user();
-
-        if ($user->role === 'super admin') {
-            return redirect()->route('super.admin.dashboard');
-        } elseif ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard.admin');
-        }
-
-        abort(403, 'Unauthorized access.');
+        return back()->with('error', 'Username atau password salah');
     }
 
     // Super admin handler
     public function superAdminDashboard()
     {
+        $user = Auth::guard('admin')->user();
+
+        // Periksa apakah user adalah super admin dan menggunakan password default
+        if ($user->role === 'super admin' && Hash::check('superadmin123', $user->password)) {
+            session()->flash('error', 'Akun super admin masih menggunakan password default, silahkan ubah password untuk keamanan.');
+        }
+
         // Menghitung jumlah admin dan jumlah pengguna
         $adminCount = Admin::count();
         $userCount = User::count();
@@ -74,25 +79,49 @@ class AdminController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'password' => 'nullable|string|min:6|confirmed', // Pastikan password di-validasi
-        ]);
+        try {
+            $request->validate([
+                'username' => 'required|unique:admins,username,' . $id,
+                'password' => 'nullable|min:6',
+            ], [
+                'username.required' => 'Update gagal, username wajib diisi.',
+                'username.unique' => 'Update gagal, akun dengan username tersebut sudah ada, silahkan pilih username lain.',
+                'password.min' => 'Update gagal, password harus berisi 6 karakter atau lebih.',
+            ]);
 
-        $admin = Admin::findOrFail($id);
-        $admin->username = $request->input('username');
+            $admin = Admin::findOrFail($id);
+            $admin->username = $request->input('username');
 
-        if ($request->filled('password')) {
-            $admin->password = bcrypt($request->input('password')); // Enkripsi password
+            if ($request->filled('password')) {
+                $admin->password = bcrypt($request->input('password'));
+            }
+
+            $admin->save();
+
+            // Jika berhasil
+            return redirect()->route('super.admin.dashboard')->with('success', 'Admin berhasil diupdate!');
+        } catch (ValidationException $e) {
+            // Tangkap error validasi dan beri key untuk tiap error
+            $errors = $e->validator->errors();
+            return redirect()->back()->withErrors([
+                'username_error' => $errors->first('username'),
+                'password_error' => $errors->first('password'),
+            ])->withInput();
+        } catch (\Exception $e) {
+            // Tangkap error lain yang tidak diduga
+            return redirect()->back()->with('error', 'An unexpected error occurred. Please try again.');
         }
-
-        $admin->save();
-
-        return redirect()->route('super.admin.dashboard')->with('success', 'Admin updated successfully');
     }
 
     public function superAdminInfo()
     {
+        $user = Auth::guard('admin')->user();
+
+        // Periksa apakah user adalah super admin dan menggunakan password default
+        if ($user->role === 'super admin' && Hash::check('superadmin123', $user->password)) {
+            session()->flash('error', 'Akun super admin masih menggunakan password default, silahkan ubah password untuk keamanan.');
+        }
+
         return view('admin.super-admin.info');
     }
 
@@ -106,33 +135,68 @@ class AdminController extends Controller
 
     public function storeAdmin(Request $request)
     {
-        $request->validate([
-            'username' => 'required|unique:admins,username',
-            'password' => 'required|min:6',
-        ]);
+        try {
+            $request->validate([
+                'username' => 'required|unique:admins,username',
+                'password' => 'required|min:6',
+            ], [
+                'username.required' => 'Username wajib diisi.',
+                'username.unique' => 'Akun dengan username yang diinputkan sudah ada, silahkan input username lain.',
+                'password.required' => 'Username wajib diisi.',
+                'password.min' => 'Password harus berisi 6 karakter atau lebih.',
+            ]);
 
-        Admin::create([
-            'username' => $request->username,
-            'password' => bcrypt($request->password),
-            'role' => 'admin',
-        ]);
+            Admin::create([
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+                'role' => 'admin',
+            ]);
 
-        return redirect()->route('super.admin.dashboard')->with('success', 'Admin berhasil ditambahkan!');
+            return redirect()->route('super.admin.dashboard')->with('success', 'Admin berhasil ditambahkan!');
+        } catch (ValidationException $e) {
+            // Tangkap error validasi dan beri key untuk tiap error
+            $errors = $e->validator->errors();
+            return redirect()->back()->withErrors([
+                'username_error' => $errors->first('username'),
+                'password_error' => $errors->first('password'),
+            ])->withInput();
+        } catch (\Exception $e) {
+            // Tangkap error lain yang tidak diduga
+            return redirect()->back()->with('error', 'An unexpected error occurred. Please try again.');
+        }
     }
 
     public function updateAdminInfo(Request $request, $redirectRoute = 'admin.info')
     {
-        $user = Auth::guard('admin')->user();
+        try {
+            $user = Auth::guard('admin')->user();
 
-        $request->validate([
-            'username' => 'required|string|unique:admins,username,' . $user->id,
-        ]);
+            $request->validate([
+                'username' => 'required|unique:admins,username,' . $user->id,
+            ], [
+                'username.required' => 'Username wajib diisi.',
+                'username.unique' => 'Akun dengan username yang diinputkan sudah ada, silahkan input username lain.'
+            ]);
 
-        $user->update([
-            'username' => $request->username,
-        ]);
+            if ($request->username === $user->username) {
+                return redirect()->back()->with('error', 'Username baru tidak boleh sama dengan username lama.');
+            }
 
-        return redirect()->route($redirectRoute)->with('success', 'Info akun berhasil diperbarui!');
+            $user->update([
+                'username' => $request->username,
+            ]);
+
+            return redirect()->route($redirectRoute)->with('success', 'Info akun berhasil diperbarui!');
+        } catch (ValidationException $e) {
+            // Tangkap error validasi dan beri key untuk tiap error
+            $errors = $e->validator->errors();
+            return redirect()->back()->withErrors([
+                'username_error' => $errors->first('username'),
+            ])->withInput();
+        } catch (\Exception $e) {
+            // Tangkap error lain yang tidak diduga
+            return redirect()->back()->with('error', 'An unexpected error occurred. Please try again.');
+        }
     }
 
     public function updateSuperAdminInfo(Request $request)
@@ -152,6 +216,12 @@ class AdminController extends Controller
         if (!Hash::check($request->current_password, $user->password)) {
             throw ValidationException::withMessages([
                 'current_password' => 'Password lama salah.',
+            ]);
+        }
+
+        if ($request->current_password === $request->new_password) {
+            throw ValidationException::withMessages([
+                'new_password' => 'Password baru tidak boleh sama dengan password lama.',
             ]);
         }
 

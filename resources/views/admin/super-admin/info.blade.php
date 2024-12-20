@@ -1,4 +1,5 @@
 <x-admin-layout>
+    @section('title', 'Edit Profile')
     <div class="flex h-screen bg-gray-100">
         <!-- Sidebar -->
         <div class="w-64 bg-blue-100 shadow-lg">
@@ -22,13 +23,17 @@
                     <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
                         <a href="{{ route('super.admin.dashboard') }}">Dashboard</a>
                     </li>
-                    <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer bg-blue-200 font-semibold">Super Admin Info</li>
+                    <li
+                        class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer bg-blue-200 font-semibold">
+                        Super Admin Info</li>
                     <li class="text-gray-700 hover:bg-blue-300 px-4 py-3 rounded cursor-pointer">
-                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST"
+                            style="display: none;">
                             @csrf
                         </form>
-        
-                        <a href="#" class="logout-link mt-4" onclick="event.preventDefault(); 
+
+                        <a href="#" class="logout-link mt-4"
+                            onclick="event.preventDefault(); 
                             $('#logout-form').submit();">
                             Logout
                         </a>
@@ -41,6 +46,21 @@
         <div class="flex-1 bg-white">
             <div class="px-8 py-6">
                 <h1 class="text-2xl font-bold my-6 pb-6">Info Akun Super Admin</h1>
+
+                <!-- Success or Error message -->
+                <x-success-alert />
+                <x-error-alert />
+
+                @if ($errors->has('username_error'))
+                    <div role="alert" class="alert alert-error my-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{{ $errors->first('username_error') }}</span>
+                    </div>
+                @endif
 
                 {{-- Form Info Akun Super Admin --}}
                 <form action="{{ route('super.admin.update') }}" method="POST" class="space-y-6">

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Kapays</title>
+    <title>Kapays - Home</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -86,7 +86,7 @@
             </div>
 
             <div class="links">
-                <a href="https:/">Buku Petunjuk</a>
+                <a href="https://user-manual.my.canva.site/copy-of-manual-book">Buku Petunjuk</a>
                 <a href="https://laracasts.com">Tentang Pengembang</a>
             </div>
         </div>

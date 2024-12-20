@@ -1,7 +1,7 @@
 <x-admin-layout>
     <div class="flex">
         <!-- Sidebar Component -->
-        <x-admin-sidebar />
+        <x-admin-sidebar :active="__('dashboard')" />
 
         <!-- Main Content Area -->
         <div class="flex-1 bg-gray-100 p-4">

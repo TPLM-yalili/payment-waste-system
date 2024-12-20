@@ -1,23 +1,15 @@
 <x-admin-layout>
+    @section('title', 'Tagihan')
     <div class="flex">
         <!-- Sidebar Component -->
-        @include('components.admin-sidebar')
+        <x-admin-sidebar :active="__('bills')" />
 
         <!-- Main Content Area -->
         <div class="flex-1 bg-gray-100 p-4">
 
             <!-- Success or Error message -->
-            @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-            @endif
-
-            @if(session('error'))
-            <div class="alert alert-error">
-                {{ session('error') }}
-            </div>
-            @endif
+            <x-success-alert />
+            <x-error-alert />
 
             <!-- Cards Section (Optional - you can add your stats here if needed) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">

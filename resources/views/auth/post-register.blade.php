@@ -2,6 +2,8 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    @section('title', 'Post Register - Kapays')
+
     <form method="POST" action="/auth/post-register" class="w-full max-w-sm px-6 pt-8 pb-6">
         @csrf
 

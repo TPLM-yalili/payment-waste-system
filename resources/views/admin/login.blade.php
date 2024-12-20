@@ -4,9 +4,7 @@
             <p class="text-center mb-5 text-sm">
                 Masuk sebagai Admin.
             </p>
-        @if ($errors->any())
-            <x-error-alert :messages="$errors->all()" />
-        @endif
+                <x-error-alert />
         <form method="POST" action="{{ route('admin.login.submit') }}">
             @csrf
             {{-- <div>

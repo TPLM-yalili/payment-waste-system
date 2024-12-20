@@ -1,5 +1,6 @@
-<!-- resources/views/components/admin-sidebar.blade.php -->
-<div class="bg-blue-700 shadow-lg w-full text-white h-screen md:w-64">
+@props(['active'])
+
+<div class="bg-blue-700 shadow-lg w-full text-white h-screen md:w-64" data-active="{{ $active }}">
     <!-- Logo Section -->
     <div class="flex items-center justify-center py-6">
         <span class="text-xl font-bold text-white sidebar-toggle">Kapays</span>
@@ -16,16 +17,16 @@
     <!-- Navigation Menu -->
     <nav class="mt-6 px-4 text-white">
         <ul class="space-y-3">
-            <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
+            <li data-id="dashboard" class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
             </li>
-            <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
+            <li data-id="user-list" class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
                 <a href="{{ route('admin.users-list') }}">List Pengguna</a>
             </li>
-            <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
+            <li data-id="bills" class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
                 <a href="{{ route('admin.bills') }}">Tagihan</a>
             </li>
-            <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
+            <li data-id="info" class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
                 <a href="{{ route('admin.info') }}">Pengaturan</a>
             </li>
             <li class="text-white hover:bg-blue-600 px-4 py-3 rounded cursor-pointer">
@@ -41,3 +42,23 @@
         </ul>
     </nav>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Ambil elemen sidebar
+        const sidebar = document.querySelector('.bg-blue-700');
+        if (!sidebar) return;
+
+        // Ambil nilai "active" dari atribut data-active
+        const activeMenu = sidebar.getAttribute('data-active');
+        if (!activeMenu) return;
+
+        // Temukan elemen menu dengan data-id yang cocok
+        const activeElement = sidebar.querySelector(`[data-id="${activeMenu}"]`);
+        if (activeElement) {
+            // Tambahkan class ke elemen aktif
+            activeElement.classList.add('border', 'hover:border-gray-50/0', 'border-gray-50/50');
+        }
+    });
+</script>

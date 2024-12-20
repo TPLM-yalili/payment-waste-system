@@ -2,7 +2,7 @@
 @section('title', 'List Pengguna')
     <div class="flex">
         <!-- Sidebar Component -->
-        @include('components.admin-sidebar')
+        <x-admin-sidebar :active="__('user-list')" />
 
         <!-- Main Content Area -->
         <div class="flex-1 bg-gray-100 px-8 py-6">
@@ -10,15 +10,9 @@
             <!-- Tabel Invoices -->
             <h1 class="text-2xl font-bold my-6 pb-6">Daftar User terdaftar</h1>
 
-            @if (session('success'))
-                <div role="alert" class="alert alert-success mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current text-white" fill="none" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>                    
-                    <span class="text-white">{{ session('success') }}</span>
-                </div>
-            @endif
+            <!-- Success or Error message -->
+            <x-success-alert />
+            <x-error-alert />
 
 
             <div class="bg-white shadow-md rounded-lg p-6">

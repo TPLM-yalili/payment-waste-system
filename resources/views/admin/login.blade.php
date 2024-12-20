@@ -1,6 +1,9 @@
-<x-guest-layout :tag_line="__('Halaman login untuk admin Kapays, silahkan masukkan username dan password akun admin anda.')">
+<x-guest-layout :tag_line="__('Masuk sebagai Admin Kapays, silahkan masukkan username dan password akun Admin Anda.')">
     <div class="m-6">
-        <h1 class="font-semibold text-xl mb-4">Login Admin</h1>
+    <h1 class="text-2xl text-center font-semibold mb-4 mt-1">Login</h1>
+            <p class="text-center mb-5 text-sm">
+                Masuk sebagai Admin.
+            </p>
         @if ($errors->any())
             <x-error-alert :messages="$errors->all()" />
         @endif

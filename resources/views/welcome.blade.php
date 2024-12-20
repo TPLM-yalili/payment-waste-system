@@ -82,7 +82,7 @@
 
         <div class="content">
             <div class="title m-b-md">
-                <img src="{{ asset('images/kapayss.png') }}" alt="Kapays Logo" style="max-width: 500px; height: auto;">
+                <x-application-logo src="{{ asset('images/kapayss.png') }}" alt="Kapays Logo" style="max-width: 500px; height: auto;"/>
             </div>
 
             <div class="links">

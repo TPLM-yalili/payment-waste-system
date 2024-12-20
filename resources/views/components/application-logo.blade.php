@@ -1,3 +1,1 @@
-<div style="width: 100px; height: auto">
-    <img src="{{ asset('images/kapayss.png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
-</div>
+<img {{ $attributes }} src="https://avatars.githubusercontent.com/u/186799587?s=200&v=4" alt="Logo">

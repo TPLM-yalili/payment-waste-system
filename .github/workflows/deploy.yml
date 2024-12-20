@@ -24,6 +24,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
+            cd kapays
             git pull origin main
             php artisan migrate --force
             npm i && npm run build

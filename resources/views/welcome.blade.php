@@ -86,7 +86,7 @@
             </div>
 
             <div class="links">
-                <a href="https:/">Buku Petunjuk</a>
+                <a href="https://kapaysusermanual.my.canva.site/">Buku Petunjuk</a>
                 <a href="https://laracasts.com">Tentang Pengembang</a>
             </div>
         </div>

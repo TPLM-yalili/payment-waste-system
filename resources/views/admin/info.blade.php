@@ -1,11 +1,26 @@
 <x-admin-layout>
     <div class="flex">
         <!-- Sidebar Component -->
-        @include('components.admin-sidebar')
+        <x-admin-sidebar :active="__('info')" />
 
         <!-- Main Content Area -->
         <div class="flex-1 bg-gray-100 px-8 py-6">
             <h1 class="text-2xl font-bold my-6 pb-6">Info Akun Admin</h1>
+
+            <!-- Success or Error message -->
+            <x-success-alert />
+            <x-error-alert />
+
+            @if ($errors->has('username_error'))
+                <div role="alert" class="alert alert-error my-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{{ $errors->first('username_error') }}</span>
+                </div>
+            @endif
 
             {{-- Form Info Akun Admin --}}
             <form action="{{ route('admin.update') }}" method="POST" class="space-y-6">

@@ -1,4 +1,5 @@
 <x-admin-layout>
+@section('title', 'Edit Profil')
     <div class="flex">
         <!-- Sidebar Component -->
         @include('components.admin-sidebar')

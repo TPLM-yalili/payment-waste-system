@@ -4,6 +4,7 @@ window.location.href = "{{ route('post-register') }}";
 </script>
 @else
 <x-app-layout>
+@section('title', 'Home Page')
     <x-slot name="header">
         <div class="text-left mb-2 bg-white">
             <h3 class="text-2xl font-semibold text-gray-800">

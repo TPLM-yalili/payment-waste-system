@@ -1,4 +1,5 @@
 <x-admin-layout>
+@section('title', 'List Pengguna')
     <div class="flex">
         <!-- Sidebar Component -->
         @include('components.admin-sidebar')

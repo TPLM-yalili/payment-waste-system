@@ -1,5 +1,7 @@
 <x-guest-layout>
     <!-- Session Status -->
+    @section('title', 'Login')
+    
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <form class="card-body">
         <div class="form-control"> 

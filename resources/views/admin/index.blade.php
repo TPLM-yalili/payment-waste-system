@@ -30,7 +30,8 @@
                 <div class="bg-white p-6 shadow-md rounded-lg">
                     <h2 class="text-xl font-semibold text-gray-700">Total Paid Invoices</h2>
                     <p class="text-2xl font-bold text-red-600 mt-2">Rp
-                        {{ number_format($paidInvoicesAmount, 2, ',', '.') }}</p>
+                        {{ number_format($paidInvoicesAmount, 2, ',', '.') }}
+                    </p>
                 </div>
             </div>
 

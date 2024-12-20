@@ -82,12 +82,12 @@
 
         <div class="content">
             <div class="title m-b-md">
-                Kapays
+                <img src="{{ asset('images/kapayss.png') }}" alt="Kapays Logo" style="max-width: 500px; height: auto;">
             </div>
 
             <div class="links">
-                <a href="https:/">User Guide</a>
-                <a href="https://laracasts.com">About Developer</a>
+                <a href="https:/">Buku Petunjuk</a>
+                <a href="https://laracasts.com">Tentang Pengembang</a>
             </div>
         </div>
     </div>

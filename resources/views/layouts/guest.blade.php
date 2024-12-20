@@ -19,20 +19,23 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased bg-white">
-<div class="hero min-h-screen">
-    <div class="hero-content flex-col lg:flex-row">
-        <div class="text-center lg:text-left">
-            <x-application-logo class="w-12 h-12 md:w-16 md:h-16 lg:w-16 lg:h-16 mb-6 rounded-lg fill-current text-gray-500 md:ml-0 lg:ml-0" />
-            <h1 class="text-5xl font-bold mb-3">Login ke Kapays!</h1>
-            <p class="py-3 hidden md:block">
-                {{ $tag_line ?? 'Untuk melanjutkan ke Kapays, silahkan login terlebih dahulu menggunakan akun Google Anda.' }}
-            </p>
-        </div>
-        <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-            {{ $slot }}
+    <div class="hero min-h-screen">
+        <div class="hero-content flex-col lg:flex-row">
+            <div class="text-center lg:text-left">
+                <h1 class="text-5xl font-bold mb-3 flex items-center space-x-4">
+                    <span>Login ke</span>
+                    <x-application-logo
+                        class="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-lg fill-current text-gray-500" />
+                </h1>
+                <p class="py-3 hidden md:block">
+                    {{ $tag_line ?? 'Untuk melanjutkan ke Kapays, silahkan login terlebih dahulu menggunakan akun Google Anda.' }}
+                </p>
+            </div>
+            <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+                {{ $slot }}
+            </div>
         </div>
     </div>
-</div>
 </body>
 
 </html>

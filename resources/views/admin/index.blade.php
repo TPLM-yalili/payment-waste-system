@@ -6,8 +6,6 @@
         <!-- Main Content Area -->
         <div class="flex-1 bg-gray-100 p-4">
 
-            @include('layouts.navigation')
-
             <!-- Cards Section -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
                 <!-- Pending Invoices Card -->
@@ -32,7 +30,8 @@
                 <div class="bg-white p-6 shadow-md rounded-lg">
                     <h2 class="text-xl font-semibold text-gray-700">Total Paid Invoices</h2>
                     <p class="text-2xl font-bold text-red-600 mt-2">Rp
-                        {{ number_format($paidInvoicesAmount, 2, ',', '.') }}</p>
+                        {{ number_format($paidInvoicesAmount, 2, ',', '.') }}
+                    </p>
                 </div>
             </div>
 

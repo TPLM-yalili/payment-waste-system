@@ -184,74 +184,50 @@ class InvoiceController extends Controller
         return view('payments.pending', compact('invoice'));
     }
 
-    // Method to handle invoice generation command
-    // public function generateInvoices(Request $request)
-    // {
-    //     // Get all users
-    //     $users = User::all();
-
-    //     // Validasi jika tidak ada pengguna yang terdaftar
-    //     if ($users->isEmpty()) {
-    //         return redirect()->back()->with('error', 'User tidak tersedia, tidak bisa membuat invoice.');
-    //     }
-
-    //     // Validasi jika invoice sudah dibuat bulan ini
-    //     $lastInvoice = Invoice::whereYear('created_at', now()->year)
-    //         ->whereMonth('created_at', now()->month)
-    //         ->first();
-
-    //     if ($lastInvoice) {
-    //         return redirect()->back()->with('error', 'Mohon maaf, Anda hanya bisa membuat invoice satu kali sebulan.');
-    //     }
-
-    //     foreach ($users as $user) {
-    //         // Create a new invoice for each user
-    //         Invoice::create([
-    //             'user_id' => $user->id,
-    //             'order_id' => 'INV-' . uniqid(),
-    //             'amount' => 100000, // Amount for the invoice
-    //             'due_date' => Carbon::now()->addMonth()->startOfMonth(),
-    //         ]);
-    //     }
-
-    //     // Redirect back with a success message
-    //     return redirect()->route('admin.bills')->with('success', 'Invoice berhasil dibuat untuk semua pengguna.');
-    // }
-
     public function generateInvoices(Request $request)
-{
-    // Get all users
-    $users = User::all();
+    {
+        // Get all users
+        $users = User::all();
 
-    // Validasi jika tidak ada pengguna yang terdaftar
-    if ($users->isEmpty()) {
-        return redirect()->back()->with('error', 'User tidak tersedia, tidak bisa membuat invoice.');
+        // Validasi jika tidak ada pengguna yang terdaftar
+        if ($users->isEmpty()) {
+            return redirect()->back()->with('error', 'User tidak tersedia, tidak bisa membuat invoice.');
+        }
+
+        // Filter hanya pengguna yang diverifikasi (is_verified = 1)
+        $verifiedUsers = $users->filter(function ($user) {
+            return $user->is_verified == 1;
+        });
+
+        // Validasi jika tidak ada pengguna yang diverifikasi
+        if ($verifiedUsers->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada pengguna yang diverifikasi, tidak bisa membuat invoice.');
+        }
+
+        // Validasi jika invoice sudah dibuat bulan ini untuk semua pengguna yang diverifikasi
+        $usersWithoutInvoices = $verifiedUsers->filter(function ($user) {
+            return !Invoice::where('user_id', $user->id)
+                ->whereYear('created_at', now()->year)
+                ->whereMonth('created_at', now()->month)
+                ->exists();
+        });
+
+        // Jika tidak ada pengguna baru tanpa tagihan dan invoice sudah dibuat, larang pembuatan
+        if ($usersWithoutInvoices->isEmpty()) {
+            return redirect()->back()->with('error', 'Mohon maaf, Anda hanya bisa membuat invoice satu kali sebulan.');
+        }
+
+        // Buat invoice untuk pengguna yang belum memiliki tagihan bulan ini
+        foreach ($usersWithoutInvoices as $user) {
+            Invoice::create([
+                'user_id' => $user->id,
+                'order_id' => 'INV-' . uniqid(),
+                'amount' => 100000, // Amount for the invoice
+                'due_date' => Carbon::now()->addMonth()->startOfMonth(),
+            ]);
+        }
+
+        // Redirect back with a success message
+        return redirect()->route('admin.bills')->with('success', 'Invoice berhasil dibuat untuk pengguna yang diverifikasi dan belum memiliki tagihan bulan ini.');
     }
-
-    // Validasi jika invoice sudah dibuat bulan ini untuk semua user
-    $usersWithoutInvoices = $users->filter(function ($user) {
-        return !Invoice::where('user_id', $user->id)
-            ->whereYear('created_at', now()->year)
-            ->whereMonth('created_at', now()->month)
-            ->exists();
-    });
-
-    // Jika tidak ada user baru tanpa tagihan dan invoice sudah dibuat, larang pembuatan
-    if ($usersWithoutInvoices->isEmpty()) {
-        return redirect()->back()->with('error', 'Mohon maaf, Anda hanya bisa membuat invoice satu kali sebulan.');
-    }
-
-    // Buat invoice untuk user yang belum memiliki tagihan bulan ini
-    foreach ($usersWithoutInvoices as $user) {
-        Invoice::create([
-            'user_id' => $user->id,
-            'order_id' => 'INV-' . uniqid(),
-            'amount' => 100000, // Amount for the invoice
-            'due_date' => Carbon::now()->addMonth()->startOfMonth(),
-        ]);
-    }
-
-    // Redirect back with a success message
-    return redirect()->route('admin.bills')->with('success', 'Invoice berhasil dibuat untuk pengguna yang belum memiliki tagihan bulan ini.');
-}
 }

@@ -17,7 +17,18 @@ class AdminController extends Controller
 {
     public function showLoginForm()
     {
-        return view('admin.login'); // Tampilkan halaman login
+        if (Auth::guard('admin')->check()) {
+            $user = Auth::guard('admin')->user();
+    
+            // Cek role pengguna dan arahkan ke dashboard yang sesuai
+            if ($user->role === 'super admin') {
+                return redirect()->route('super.admin.dashboard');
+            } elseif ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+        }
+        
+        return view('admin.login');
     }
 
     public function login(Request $request)

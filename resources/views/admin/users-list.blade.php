@@ -1,4 +1,5 @@
 <x-admin-layout>
+@section('title', 'List Pengguna')
     <div class="flex">
         <!-- Sidebar Component -->
         <x-admin-sidebar :active="__('user-list')" />

@@ -1,4 +1,5 @@
 <x-admin-layout>
+    @section('title', 'Edit Profile')
     <div class="flex h-screen bg-gray-100">
         <!-- Sidebar -->
         <div class="w-64 bg-blue-100 shadow-lg">

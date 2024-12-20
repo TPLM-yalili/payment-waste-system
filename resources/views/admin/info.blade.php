@@ -1,4 +1,5 @@
 <x-admin-layout>
+@section('title', 'Edit Profil')
     <div class="flex">
         <!-- Sidebar Component -->
         <x-admin-sidebar :active="__('info')" />

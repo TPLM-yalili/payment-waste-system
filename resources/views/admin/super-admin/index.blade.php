@@ -1,4 +1,6 @@
 <x-admin-layout title="Admin Dashboard">
+    @section('title', 'Super Admin')
+    
     <div class="flex h-screen bg-gray-100 text-black">
         <!-- Sidebar -->
         <div class="w-64 bg-blue-100 shadow-lg">

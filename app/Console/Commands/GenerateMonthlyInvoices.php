@@ -25,7 +25,7 @@ class GenerateMonthlyInvoices extends Command
             Invoice::create([
                 'user_id' => $user->id,
                 'order_id' => 'INV-' . uniqid(),
-                'amount' => 100000, // Nominal tagihan
+                'amount' => 30000, // Nominal tagihan
                 'due_date' => Carbon::now()->addMonth()->startOfMonth(),
             ]);
         }

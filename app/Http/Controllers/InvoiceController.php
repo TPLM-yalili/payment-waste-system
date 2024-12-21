@@ -78,6 +78,11 @@ class InvoiceController extends Controller
                 'order_id' => $invoice->order_id,
                 'gross_amount' => $invoice->amount,
             ],
+            'callbacks' => [
+                'finish' => route('payment.success', ['order_id' => $invoice->order_id]),
+                'unfinish' => route('payment.pending', ['order_id' => $invoice->order_id]),
+                'error' => route('payment.failed', ['order_id' => $invoice->order_id]),
+            ],
             'customer_details' => [
                 'first_name' => $invoice->user->name,
                 'email' => $invoice->user->email,

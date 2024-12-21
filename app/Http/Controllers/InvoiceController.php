@@ -222,7 +222,7 @@ class InvoiceController extends Controller
             Invoice::create([
                 'user_id' => $user->id,
                 'order_id' => 'INV-' . uniqid(),
-                'amount' => 100000, // Amount for the invoice
+                'amount' => 30000, // Amount for the invoice
                 'due_date' => Carbon::now()->addMonth()->startOfMonth(),
             ]);
         }
